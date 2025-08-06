@@ -85,5 +85,55 @@ class UserController extends Controller
         return Excel::download(new UsersExport, 'users.xlsx');
     }
 
+    public function alldeletedUser(Request $request){
 
+        $deleted_users = User::onlyTrashed()->get();
+        $alldeletedusers = User::onlyTrashed()->count();
+        return view('dashboard.pages.users.deleted_users', compact('deleted_users','alldeletedusers'));
+    }
+
+    public function deleted_userCompletely(Request $request)
+    {
+        
+        try{
+            $user_id = $request->user_id;
+            $user = User::withTrashed()->find($user_id);  
+            $user->forceDelete();
+            return response()->json([
+               'success'=> true,
+               'msg' => 'User Deleted Successfully'
+            ]); 
+        }
+        catch(\Exception $e){
+           return response()->json([
+               'success'=> false,
+               'msg' => $e->getMessage()
+           ]);
+        }
+    }
+
+    public function restore_userCompletely(Request $request)
+    {
+        
+        
+        try{
+           $user_id = $request->user_id;
+           $user = User::withTrashed()->find($user_id);  
+           $user->restore();
+           return response()->json([
+               'success'=> true,
+               'msg' => 'User Restored Successfully'
+           ]); 
+
+        }catch(\Exception $e)
+        {
+           return response()->json([
+               'success'=> false,
+               'msg' => $e->getMessage()
+           ]);
+        }
+    }
+    
+
+    
 }

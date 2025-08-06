@@ -68,7 +68,10 @@ Route::middleware('superadmincheck')->group(function () {
     Route::post('/create_permission_route', [PermissionController::class,'createPermissionRoute'])->name('create_permission_route');
     Route::get('/edit_permission_route/{id}', [PermissionController::class,'editPermissionRoute'])->name('edit_permission_route');
     Route::post('/update_permission_route', [PermissionController::class,'updatePermissionRoute'])->name('update_permission_route');
-    
+
+    Route::get('/all_deleted_user',[UserController::class,'alldeletedUser'])->name('all_deleted_user');
+    Route::post('/deleted_userCompletely',[UserController::class,'deleted_userCompletely'])->name('deleted_userCompletely');
+    Route::post('/restore_userCompletely',[UserController::class,'restore_userCompletely'])->name('restore_userCompletely');
 });
 
 

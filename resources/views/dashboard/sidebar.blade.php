@@ -62,6 +62,12 @@
               <iconify-icon icon="bi:dash" width="16" height="16"></iconify-icon>
               Inactive Users</a>
           </li>
+
+          <li>
+            <a href="{{route('all_deleted_user')}}">
+              <iconify-icon icon="bi:dash" width="16" height="16"></iconify-icon>
+              Deleted Users</a>
+          </li>
           
         </ul>
       </li>
