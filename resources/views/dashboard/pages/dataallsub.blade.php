@@ -29,12 +29,13 @@
             </div>
             <p class="mt-16 mb-0 text-secondary-light mb-28">{{$allsub->plan_info_text ?? ''}}</p>
             <!-- <h3 class="mb-24" style="color:#f6f6f7;">$99 <span class="fw-medium text-md text-secondary-light">/monthly</span> </h3> -->
-            <h3 class="mb-24" style="color:#f6f6f7;font-size: 33px !important;">
+            <h3 class="mb-24" style="color:#f6f6f7;font-size: 22px !important;">
                 <?php
                    $curr = DB::table('currency')->where('code',$allsub->currency)->first();
-                   echo $curr->symbol;
+                   $basecurrSymbol = DB::table('currency')->where('code',$currencyExchangeRate->rate_symbol)->first();
+                   $amount = $allsub->subscription_amount/$currencyExchangeRate->rate;
                  ?>
-                {{$allsub->subscription_amount ?? ''}}
+                {{$curr->symbol}}{{number_format($allsub->subscription_amount ?? '', 2, '.', ',')}} / {{$basecurrSymbol->symbol ?? ''}}{{number_format($amount ?? '', 2, '.', ',');}}
             </h3>
             <span class="mb-20 fw-medium" style="color:#f6f6f7;">What’s included</span>
             <ul>

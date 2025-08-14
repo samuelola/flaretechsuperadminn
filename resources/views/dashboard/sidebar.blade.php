@@ -8,6 +8,7 @@
   $permissionPermissions = App\Models\PermissionRole::getPermission('Permissions',Auth::user()->role_id);
   $permissionedituserPermission = App\Models\PermissionRole::getPermission('delete-users',Auth::user()->role_id);
   $permissiondeleteuserPermission = App\Models\PermissionRole::getPermission('edit-users',Auth::user()->role_id);
+  $permissionchooseSubscriptionPermission = App\Models\PermissionRole::getPermission('choose_subscription',Auth::user()->role_id);
   @endphp
   <button type="button" class="sidebar-close-btn">
     <iconify-icon icon="radix-icons:cross-2"></iconify-icon>
@@ -93,12 +94,13 @@
             <a href="{{route('allsubscription')}}"><iconify-icon icon="bi:dash" width="16" height="16"></iconify-icon>All Subscriptions</a>
           </li>
           @endif  
-          <!-- <li>
-            <a href="invoice-add.html"><i class="ri-circle-fill circle-icon text-info-main w-auto"></i> Add new</a>
-          </li>
+          @if(!empty($permissionchooseSubscriptionPermission))
           <li>
-            <a href="invoice-edit.html"><i class="ri-circle-fill circle-icon text-danger-main w-auto"></i> Edit</a>
-          </li> -->
+          
+            <a href="{{route('choosesubscription')}}"><iconify-icon icon="bi:dash" width="16" height="16"></iconify-icon>Choose Subscriptions</a>
+          </li>
+          @endif
+         
         </ul>
       </li>
       @endif
@@ -205,6 +207,44 @@
           
         </ul>
       </li> -->
+
+      <li class="dropdown">
+        <a href="javascript:void(0)" class="menu-icon">
+        <iconify-icon icon="hugeicons:payment-02" width="16" height="16" style="margin-inline-end: 0.4rem;"></iconify-icon>
+          <span>Payout</span> 
+        </a>
+        <ul class="sidebar-submenu">
+          <li>
+            <a href="{{route('payment')}}">
+              <iconify-icon icon="bi:dash" width="16" height="16"></iconify-icon>
+              Payments</a>
+          </li>
+          <li>
+            <a href="{{route('earnings')}}">
+              <iconify-icon icon="bi:dash" width="16" height="16"></iconify-icon>
+              Earnings</a>
+          </li>
+          <!-- <li>
+            <a href="{{route('split_sheet')}}">
+              <iconify-icon icon="bi:dash" width="16" height="16"></iconify-icon>
+              Split Sheet</a>
+          </li> -->
+        </ul>
+      </li>
+
+      <li class="dropdown">
+        <a href="javascript:void(0)" class="menu-icon">
+        <iconify-icon icon="material-symbols-light:settings-outline" width="16" height="16" style="margin-inline-end: 0.4rem;"></iconify-icon>  
+          <span>Settings</span> 
+        </a>
+        <ul class="sidebar-submenu">
+          <li>
+            <a href="{{route('settings')}}">
+              <iconify-icon icon="bi:dash" width="16" height="16"></iconify-icon>
+              API</a>
+          </li>
+        </ul>
+      </li>
 
       
       <li>

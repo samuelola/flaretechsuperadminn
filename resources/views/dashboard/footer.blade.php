@@ -654,8 +654,233 @@ function infinteLoadMoreallSub(page) {
 } );
 </script>
 
+<script>
+    $('#world-map').vectorMap(
+    {
+      map: 'world_mill_en',
+      backgroundColor: 'transparent',
+      borderColor: '#fff',
+      borderOpacity: 0.25,
+      borderWidth: 0,
+      color: '#000000',
+      regionStyle : {
+          initial : {
+          fill : '#D1D5DB'
+        }
+      },
+      markerStyle: {
+      initial: {
+            r: 5,
+            'fill': '#fff',
+            'fill-opacity':1,
+            'stroke': '#000',
+            'stroke-width' : 1,
+            'stroke-opacity': 0.4
+        },
+    },
+      markers : [{
+          latLng : [35.8617, 104.1954],
+          name : 'China : 250'
+        },
 
+        {
+          latLng : [25.2744, 133.7751],
+          name : 'AustrCalia : 250'
+        },
 
+        {
+          latLng : [36.77, -119.41],
+          name : 'USA : 82%'
+        },
+
+        {
+          latLng : [55.37, -3.41],
+          name : 'UK   : 250'
+        },
+
+        {
+          latLng : [25.20, 55.27],
+          name : 'UAE : 250'
+      }],
+
+      series: {
+          regions: [{
+              values: {
+                  "US": '#487FFF ',
+                  "SA": '#487FFF',
+                  "AU": '#487FFF',
+                  "CN": '#487FFF',
+                  "GB": '#487FFF',
+              },
+              attribute: 'fill'
+          }]
+      },
+      hoverOpacity: null,
+      normalizeFunction: 'linear',
+      zoomOnScroll: false,
+      scaleColors: ['#000000', '#000000'],
+      selectedColor: '#000000',
+      selectedRegions: [],
+      enableZoom: false,
+      hoverColor: '#fff',
+      
+    }); 
+  // ================================ J Vector Map End ================================
+</script>
+
+<script>
+      var options = {
+        series: [80, 40, 10],
+        chart: {
+            height: 300,
+            type: 'radialBar',
+        },
+        colors: ['#3D7FF9', '#ff9f29', '#16a34a'], 
+        stroke: {
+            lineCap: 'round',
+        },
+        plotOptions: {
+            radialBar: {
+                hollow: {
+                    size: '10%',  // Adjust this value to control the bar width
+                },
+                dataLabels: {
+                    name: {
+                        fontSize: '16px',
+                    },
+                    value: {
+                        fontSize: '16px',
+                    },
+                    // total: {
+                    //     show: true,
+                    //     formatter: function (w) {
+                    //         return '82%'
+                    //     }
+                    // }
+                },
+                track: {
+                    margin: 20, // Space between the bars
+                }
+            }
+        },
+        labels: ['Cardiology', 'Psychiatry', 'Pediatrics'],
+    };
+
+    var chart = new ApexCharts(document.querySelector("#radialMultipleBar"), options);
+    chart.render();
+    // ================================= Multiple Radial Bar Chart End =============================
+</script>
+
+<script>
+      // ================================ Total Transaction line chart Start ================================ 
+  var options = {
+    series: [{
+      name: "This month",
+      data: [4, 16, 12, 28, 22, 38, 23]
+    }],
+    chart: {
+      height: 290,
+      type: 'line',
+      toolbar: {
+        show: false
+      },
+      zoom: {
+        enabled: false
+      },
+      dropShadow: {
+        enabled: true,
+        top: 6,
+        left: 0,
+        blur: 4,
+        color: "#000",
+        opacity: 0.1,
+      },
+    },
+    dataLabels: {
+      enabled: false
+    },
+    stroke: {
+      curve: 'smooth',
+      width: 3
+    },
+    markers: {
+      size: 0,
+      strokeWidth: 3,
+      hover: {
+        size: 8
+      }
+    },
+    tooltip: {
+      enabled: true,
+      x: {
+        show: true,
+      },
+      y: {
+        show: false,
+      },
+      z: {
+        show: false,
+      }
+    },
+    grid: {
+      row: {
+        colors: ['transparent', 'transparent'], // takes an array which will be repeated on columns
+        opacity: 0.5
+      },
+      borderColor: '#D1D5DB',
+      strokeDashArray: 3,
+    },
+    yaxis: {
+      labels: {
+        formatter: function (value) {
+          return "$" + value + "k";
+        },
+        style: {
+          fontSize: "14px"
+        }
+      },
+    },
+    xaxis: {
+      categories: ['Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat', 'Sun'],
+      tooltip: {
+        enabled: false
+      },
+      labels: {
+        formatter: function (value) {
+          return value;
+        },
+        style: {
+          fontSize: "14px"
+        }
+      },
+      axisBorder: {
+        show: false
+      },
+      crosshairs: {
+        show: true, 
+        width: 20,
+        stroke: {
+          width: 0
+        },
+        fill: {
+          type: 'solid',
+          color: '#B1B9C4',
+          gradient: {
+              colorFrom: '#D8E3F0',
+              colorTo: '#BED1E6',
+              stops: [0, 100],
+              opacityFrom: 0.4,
+              opacityTo: 0.5,
+          },
+        }
+      }
+    }
+  };
+
+  var chart = new ApexCharts(document.querySelector("#transactionLineChartt"), options);
+  chart.render();
+  // ================================ Total Transaction line chart End ================================ 
+</script>
 
 @yield('script')
 

@@ -11,16 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('user_wallet', function (Blueprint $table) {
+        Schema::create('user_statistics', function (Blueprint $table) {
             $table->id();
-            $table->uuid()->unique()->nullable();
             $table->unsignedBigInteger('user_id')->nullable();
-            $table->string('currency_code')->nullable();
-            $table->decimal('balance', 16, 2)->default(0);
-            $table->decimal('minimium_balance', 16, 2)->default(0);
-            $table->integer('status')->nullable();
-            $table->integer('defaultt')->nullable();
-            $table->integer('currency_id')->nullable();
+            $table->string('login_count')->default(0);
+            $table->string('invite_members')->default(0);
+            $table->string('upload_release')->default(0);
+            $table->string('funds_added_count')->default(0);
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
@@ -31,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('user_wallet');
+        Schema::dropIfExists('user_statistics');
     }
 };

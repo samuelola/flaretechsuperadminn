@@ -57,11 +57,12 @@ class SubscriptionController extends Controller
     public function allsubscription(Request $request){
          
         $allsubs = DB::table('subscription_plan')->get();
+        $currencyExchangeRate = DB::table('currency')->where('code','NGN')->first();
         if ($request->ajax()) {
             $viewallSub = view('dashboard.pages.dataallsub', compact('allsubs'))->render();
             return response()->json(['htmlallsub' => $viewallSub]);
         }
-        return view('dashboard.pages.all_subscription',compact('allsubs'));
+        return view('dashboard.pages.all_subscription',compact('allsubs','currencyExchangeRate'));
     }
     
     public function edit_subscription(Request $request, $id){
@@ -114,4 +115,9 @@ class SubscriptionController extends Controller
         return redirect()->route('allsubscription')->with('success','Sucription updated Successfully');        
     }
     
+
+    public function choosesubscription(Request $request)
+    {
+        
+    }
 }

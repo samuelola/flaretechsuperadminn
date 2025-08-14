@@ -9,6 +9,8 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\AnalyticsController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\PaymentController;
 
 Route::middleware('check.user')->group(function () {
     Route::get('/dashboardd', [DashboardController::class,'showDashboardd'])->name('dashboardd');
@@ -23,6 +25,7 @@ Route::middleware('superadmincheck')->group(function () {
     Route::post('/user_update_profile/{id}',[FileUploadController::class,'userUpdateProfile'])->name('update_user_profile');
     Route::get('/subscription', [SubscriptionController::class,'subscription_form'])->name('subscription');
     Route::get('/all_subscription', [SubscriptionController::class,'allsubscription'])->name('allsubscription');
+    Route::get('/choosesubscription', [SubscriptionController::class,'choosesubscription'])->name('choosesubscription');
     Route::post('/add_subscription', [SubscriptionController::class,'add_subscription'])->name('add_subscription');
     Route::get('/edit_subscription/{id}', [SubscriptionController::class,'edit_subscription'])->name('edit_subscription');
     Route::get('/view_user/{id}', [DashboardController::class,'viewDashboard'])->name('viewdashboardusers');
@@ -72,6 +75,17 @@ Route::middleware('superadmincheck')->group(function () {
     Route::get('/all_deleted_user',[UserController::class,'alldeletedUser'])->name('all_deleted_user');
     Route::post('/deleted_userCompletely',[UserController::class,'deleted_userCompletely'])->name('deleted_userCompletely');
     Route::post('/restore_userCompletely',[UserController::class,'restore_userCompletely'])->name('restore_userCompletely');
+
+
+    Route::get('/settings',[SettingsController::class,'settings'])->name('settings');
+    Route::post('/createsettings',[SettingsController::class,'createsettings'])->name('createsettings');
+    Route::post('/updatesettings',[SettingsController::class,'updatesettings'])->name('updatesettings');
+    Route::post('/apiexchangerate',[SettingsController::class,'apiexchangerate'])->name('apiexchangerate');
+
+    Route::get('/payment',[PaymentController::class,'Payments'])->name('payment');
+    Route::get('/earnings',[PaymentController::class,'Earnings'])->name('earnings');
+    Route::get('/split_sheet',[PaymentController::class,'splitSheet'])->name('split_sheet');
+    
 });
 
 
