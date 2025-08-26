@@ -107,9 +107,7 @@
                 </thead>
                 <tbody>
                      <?php
-                     $users = App\Models\User::select('id','first_name','last_name','join_date','albums','tracks','active','profile_image')
-                      ->orderBy('id','desc')
-                      ->chunkById(500, function($users){
+                     $users = App\Models\User::chunkById(500, function($users){
                       foreach ($users as $value){
                         ?>
                           <tr>

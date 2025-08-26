@@ -22,8 +22,8 @@ class CheckUser
     public function handle(Request $request, Closure $next): Response
     {
         
-        $token = $request->pt;
-        $decrypted = Crypt::decryptString($token);
+       $token = $request->pt;
+       $decrypted = Crypt::decryptString($token);
 
        if ($decrypted) {
         $response = Http::withToken($decrypted)->get('http://superadmin.test/api/user');

@@ -95,66 +95,73 @@
                           <th scope="col" class="text-center">Actions</th>
                   </tr>
                 </thead>
-                <tbody>
-                     @foreach($gget_all_users as $value)
-                       <tr>
-                       <td>
-                            <div class="d-flex align-items-center">
-                              <?php 
-                                 if(is_null($value->profile_image)){
-                                     ?><img src="assets/images/users/user1.png" alt="" class="w-40-px h-40-px rounded-circle flex-shrink-0 me-12 overflow-hidden"><?php  
-                                 }else{
-                                     ?><img src="/profile_uploads/{{$value->profile_image}}" alt="" class="w-40-px h-40-px rounded-circle flex-shrink-0 me-12 overflow-hidden"><?php
-                                 }
-                              ?>
-                              
-                              <div class="flex-grow-1">
-                                <h6 class="text-md mb-0 fw-medium">{{$value->first_name ?? ""}}{{$value->last_name ?? ""}}</h6>
-                                <span class="text-sm fw-medium">{{$value->email ?? ""}}</span>
-                              </div>
-                            </div>
-                          </td>
-                          <td>{{ \Carbon\Carbon::parse($value->join_date)->format('d/m/Y')}}</td>
-                          <td>{{$value->albums ?? ""}}</td>
-                          <td>{{$value->tracks ?? ""}}</td>
-                          <td class="text-center"> 
-                            <?php
-                               
-                                if($value->active == 'Yes'){
-                                  ?><span class="bg-success-focus text-success-main px-24 py-4 rounded-pill fw-medium text-sm">Active</span> <?php
-                                }elseif($value->active == 'No'){
-                                   ?><span class="bg-danger-focus text-danger-main px-24 py-4 rounded-pill fw-medium text-sm">Not Active</span> <?php
-                                }
-                            ?>
-                            
-                          </td>
-                          <td>
-                           <?php 
-                             $encrypted = encrypt($value->id);
-                          
-                           
-                           ?>
-                           <div style="float:left;margin-right: 8px;">
-                           <a href="{{route('viewdashboardusers',$encrypted)}}">
-                              <!-- <span class="badge text-sm fw-semibold w-32-px h-32-px d-flex justify-content-center align-items-center rounded-circle bg-primary-600  text-white">1</span> -->
-                              <!-- <span class="badge text-sm fw-semibold  justify-content-center align-items-center rounded-circle bg-primary-600  text-white">
-                              
-                              </span> -->
-                              <iconify-icon icon="mage:edit" data-toggle="tooltip" title='Edit' width="24" height="24" style="color:#700084;"></iconify-icon>
-                           </a>
-                           </div>
-                          <div>
-                          <form method="POST" action="{{route('deleteUser',$encrypted)}}">
-                            @csrf
-                            <input name="_method" type="hidden" value="DELETE">
-                            <!-- <span class="badge text-sm fw-semibold border show_confirm border-danger-600 text-danger-600 bg-transparent px-20 py-9 radius-4 text-white">Delete</span> -->
-                            <!-- <span class="badge text-sm fw-semibold  justify-content-center align-items-center rounded-circle bg-primary-600  text-white">1</span> -->
-                            <iconify-icon class="show_confirm" data-toggle="tooltip" title='Delete' icon="mdi-light:delete" width="24" height="24" style="color:red;"></iconify-icon>
-                           </form>
-                          </div>
-                          </td>
-                       </tr>
-                     @endforeach
+                  <tbody>
+                     <?php
+                     $users = App\Models\User::select('id','first_name','last_name','join_date','albums','tracks','active','profile_image')
+                                               ->where('active','No')
+                                               ->orderBy('id','desc')
+                                               ->chunkById(500, function($users){
+                                  foreach ($users as $value){
+                                    ?>
+                                      <tr>
+                                          <td>
+                                        <div class="d-flex align-items-center">
+                                          <?php 
+                                            if(is_null($value->profile_image)){
+                                                ?><img src="assets/images/users/user1.png" alt="" class="w-40-px h-40-px rounded-circle flex-shrink-0 me-12 overflow-hidden"><?php  
+                                            }else{
+                                                ?><img src="/profile_uploads/{{$value->profile_image}}" alt="" class="w-40-px h-40-px rounded-circle flex-shrink-0 me-12 overflow-hidden"><?php
+                                            }
+                                          ?>
+                                          
+                                          <div class="flex-grow-1">
+                                            <h6 class="text-md mb-0 fw-medium">{{$value->first_name ?? ""}}{{$value->last_name ?? ""}}</h6>
+                                            <span class="text-sm fw-medium">{{$value->email ?? ""}}</span>
+                                          </div>
+                                        </div>
+                                      </td>
+                                      <td>{{ \Carbon\Carbon::parse($value->join_date)->format('d/m/Y')}}</td>
+                                      <td>{{$value->albums ?? ""}}</td>
+                                      <td>{{$value->tracks ?? ""}}</td>
+                                      <td class="text-center"> 
+                                        <?php
+                                          
+                                            if($value->active == 'Yes'){
+                                              ?><span class="bg-success-focus text-success-main px-24 py-4 rounded-pill fw-medium text-sm">Active</span> <?php
+                                            }elseif($value->active == 'No'){
+                                              ?><span class="bg-danger-focus text-danger-main px-24 py-4 rounded-pill fw-medium text-sm">Not Active</span> <?php
+                                            }
+                                        ?>
+                                        
+                                      </td>
+                                      <td>
+                                      <?php 
+                                        $encrypted = encrypt($value->id);
+                                      
+                                      
+                                      ?>
+                                      <div style="float:left;margin-right: 8px;">
+                                      <a href="{{route('viewdashboardusers',$encrypted)}}">
+                                          
+                                          <iconify-icon icon="mage:edit" data-toggle="tooltip" title='Edit' width="24" height="24" style="color:#700084;"></iconify-icon>
+                                      </a>
+                                      </div>
+                                      <div>
+                                      <form method="POST" action="{{route('deleteUser',$encrypted)}}">
+                                        @csrf
+                                        <input name="_method" type="hidden" value="DELETE">
+                                        
+                                        <iconify-icon class="show_confirm" data-toggle="tooltip" title='Delete' icon="mdi-light:delete" width="24" height="24" style="color:red;"></iconify-icon>
+                                      </form>
+                                      </div>
+                                      </td>
+                                      </tr>
+                                    <?php
+                                  }
+                                  });
+
+                     ?>
+                    
                 </tbody>
               </table>
               </div>

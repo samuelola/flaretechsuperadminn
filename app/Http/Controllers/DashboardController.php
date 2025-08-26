@@ -13,6 +13,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Facades\Cache;
 
 
 class DashboardController extends Controller
@@ -23,24 +24,25 @@ class DashboardController extends Controller
     
     public function showDashboard(Request $request)
     {
-       
         
-        $users = User::where('role_id','!=',1)->distinct('first_name')->count();
-        $users_count_last_30days = User::where('created_at', '>', now()->subDays(30)->endOfDay())->count();
-        $total_subscription = DB::table("subscription_payment_details")->count();
-        $total_subscription_last_30days = DB::table("subscription_payment_details")->where('paymentdate', '>', now()->subDays(30)->endOfDay())->count();
-        //$total_albums = DB::table("users")->sum('albums');
-        $total_albums = User::sum('albums');
+        $baseQuery = DB::table('users');
+        $baseQuery1 = DB::table('users')->where('role_id','!=',1);
+        $baseSubQuery = DB::table("subscription_payment_details");
+        $get_yearr =  DB::raw('YEAR(join_date)as year');
+        $users = (clone $baseQuery)->distinct('first_name')->count();
+        $users_count_last_30days = (clone $baseQuery)->where('created_at', '>', now()->subDays(30)->endOfDay())->count();
+        $total_subscription = (clone $baseSubQuery)->count();
+        $total_subscription_last_30days = (clone $baseSubQuery)->where('paymentdate', '>', now()->subDays(30)->endOfDay())->count();
+        $total_albums =  (clone($baseQuery))->sum('albums');
         $total_albumss = (int)$total_albums;
         $total_tracks = DB::table("trackdetails")->where(['ReleaseCount'=>0,'ReleaseCount'=>1])->distinct('UserName')->count();
         $total_trackss = (int)$total_tracks;
         $total_labels = DB::table("labeldetails")->count();
         $total_labelss = (int)$total_labels;
-        $get_all_users = User::where('role_id','!=',1)->orderBy('id','desc')->paginate(10);
-        $subscribers = DB::table("subscription_payment_details")->distinct('email')->orderBy('id','desc')->paginate(10);
+        $get_all_users = (clone($baseQuery1))->orderBy('id','desc')->paginate(10);
+        $subscribers = (clone $baseSubQuery)->distinct('email')->orderBy('id','desc')->paginate(10);
         $plans = DB::table('subscription_plan')->orderBy('id','asc')->paginate(10);
 
-        
         if ($request->ajax()) {
             $view = view('dashboard.pages.data', compact('subscribers'))->render();
             $vieww = view('dashboard.pages.dataa', compact('get_all_users'))->render();
@@ -48,46 +50,14 @@ class DashboardController extends Controller
             return response()->json(['html' => $view,'newhtml'=>$vieww,'newhtmlplan'=>$viewplan]);
         }
 
-
-        // $deposit = DB::table('users')
-        //              ->select([
-        //                DB::raw('YEAR(join_date)as year'),
-        //                DB::raw('SUM(albums) as albums'),
-        //                DB::raw('SUM(tracks) as tracks')
-        //              ])
-        //              ->orderBy('year', 'ASC')
-        //              ->groupBy('year')
-        //              ->where(DB::raw('YEAR(join_date)'), '!=', 'null' )
-        //              ->get();
-
-        $thealbums = DB::table('users')
-                     ->select([
-                       DB::raw('YEAR(join_date)as year'),
-                       DB::raw('SUM(albums) as albums'),
-                     ])
-                     ->orderBy('year', 'ASC')
-                     ->groupBy('year')
-                     ->where(DB::raw('YEAR(join_date)'), '!=', 'null' )
-                     ->where('active','Yes')
-                     ->get();
-                      
-                     
+        
+        $thealbums = $this->search_filter_albums($baseQuery);
         $albumvalue = [];              
             foreach($thealbums as $dd){
                 $albumvalue[] = $dd->albums;
         }
 
-        $thetracks = DB::table('users')
-                     ->select([
-                       DB::raw('YEAR(join_date)as year'),
-                       DB::raw('SUM(tracks) as tracks'),
-                     ])
-                     ->orderBy('year', 'ASC')
-                     ->groupBy('year')
-                     ->where(DB::raw('YEAR(join_date)'), '!=', 'null' )
-                     ->where('active','Yes')
-                     ->get(); 
-                     
+        $thetracks = $this->search_filter_tracks($baseQuery); 
         $albumvalue = [];              
             foreach($thealbums as $dd){
                 $albumvalue[] = $dd->albums;
@@ -98,13 +68,7 @@ class DashboardController extends Controller
                 $trackvalue[] = $dd->tracks;
         }
                      
-        $theyear = DB::table('users')
-        ->select(DB::raw('YEAR(join_date)as year'))
-        ->orderBy('year', 'ASC')           
-        ->groupBy('year')
-        ->where(DB::raw('YEAR(join_date)'), '!=', 'null' )
-        ->where('active','Yes')
-        ->get();
+        $theyear = $this->the_year($baseQuery,$get_yearr);
         
          $thelang = DB::table('languages')
         ->get();
@@ -112,8 +76,6 @@ class DashboardController extends Controller
         $thecountry = DB::table('countries')
         ->get();
 
-        
-   
         return view('dashboard.pages.home',compact(
             'users',
             'users_count_last_30days',
@@ -133,21 +95,47 @@ class DashboardController extends Controller
         ));
     }
 
-    public function filterInfo(Request $request){
+    public function search_filter_albums($query){
 
-        // if($request->has('date_filter_data')){
-        //     $year_data = DB::table('users')
-        //              ->select([
-        //                DB::raw('YEAR(join_date)as year'),
-        //                DB::raw('SUM(albums) as albums'),
-        //                DB::raw('SUM(tracks) as tracks')
-        //              ])
-        //              ->orderBy('year', 'ASC')
-        //              ->groupBy('year')
-        //              ->where(DB::raw('YEAR(join_date)'), '=', $request->date_filter_data )
-        //              ->get();
-        //     return response()->json(['data' => $year_data]); 
-        // }
+      return (clone $query)
+            ->select([
+            DB::raw('YEAR(join_date)as year'),
+            DB::raw('SUM(albums) as albums'),
+            ])
+            ->orderBy('year', 'ASC')
+            ->groupBy('year')
+            ->where(DB::raw('YEAR(join_date)'), '!=', 'null' )
+            ->where('active','Yes')
+            ->get();
+        
+    }
+
+    public function search_filter_tracks($query){
+
+      return (clone $query)
+            ->select([
+            DB::raw('YEAR(join_date)as year'),
+            DB::raw('SUM(tracks) as tracks'),
+            ])
+            ->orderBy('year', 'ASC')
+            ->groupBy('year')
+            ->where(DB::raw('YEAR(join_date)'), '!=', 'null' )
+            ->where('active','Yes')
+            ->get();
+        
+    }
+
+    public function the_year($query,$get_yearr){
+        return (clone $query)
+                ->select((clone $get_yearr))
+                ->orderBy('year', 'ASC')           
+                ->groupBy('year')
+                ->where(DB::raw('YEAR(join_date)'), '!=', 'null' )
+                ->where('active','Yes')
+                ->get();
+    }
+
+    public function filterInfo(Request $request){
 
         if($request->has('date_filter_data')){
             $year_data = DB::table('users')

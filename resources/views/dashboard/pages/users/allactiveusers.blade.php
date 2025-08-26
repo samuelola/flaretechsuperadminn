@@ -82,8 +82,6 @@ $permissiondeleteuserPermission = App\Models\PermissionRole::getPermission('edit
               
             </div>
 
-            
-
             <!--add user here -->
             <div class="listView">
             <div class="table-responsive" style="margin-top:20px;" >
@@ -102,9 +100,15 @@ $permissiondeleteuserPermission = App\Models\PermissionRole::getPermission('edit
                   </tr>
                 </thead>
                 <tbody>
-                     @foreach($gget_all_users as $value)
-                       <tr>
-                       <td>
+                     <?php
+                     $users = App\Models\User::select('id','first_name','last_name','join_date','albums','tracks','active','profile_image')
+                      ->where('active','Yes')
+                      ->orderBy('id','desc')
+                      ->chunkById(500, function($users){
+                      foreach ($users as $value){
+                        ?>
+                          <tr>
+                              <td>
                             <div class="d-flex align-items-center">
                               <?php 
                                  if(is_null($value->profile_image)){
@@ -141,23 +145,26 @@ $permissiondeleteuserPermission = App\Models\PermissionRole::getPermission('edit
                            
                            ?>
                            <div style="float:left;margin-right: 8px;">
-                           
                            <a href="{{route('viewdashboardusers',$encrypted)}}">
+                              
                               <iconify-icon icon="mage:edit" data-toggle="tooltip" title='Edit' width="24" height="24" style="color:#700084;"></iconify-icon>
                            </a>
-                          
                            </div>
                           <div>
-                            
                           <form method="POST" action="{{route('deleteUser',$encrypted)}}">
                             @csrf
                             <input name="_method" type="hidden" value="DELETE">
+                            
                             <iconify-icon class="show_confirm" data-toggle="tooltip" title='Delete' icon="mdi-light:delete" width="24" height="24" style="color:red;"></iconify-icon>
                            </form>
                           </div>
                           </td>
-                       </tr>
-                     @endforeach
+                          </tr>
+                        <?php
+                      }
+                      });
+
+                     ?>
                 </tbody>
               </table>
               </div>

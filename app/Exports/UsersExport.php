@@ -6,24 +6,48 @@ use App\Models\User;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use DB;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Concerns\FromQuery;
+use Maatwebsite\Excel\Concerns\WithMapping;
+use Maatwebsite\Excel\Concerns\WithChunkReading;
 
-class UsersExport implements FromCollection, WithHeadings,ShouldQueue
+class UsersExport implements FromQuery,WithHeadings, WithChunkReading
 {
-    use Exportable;
-    /**
-    * @return \Illuminate\Support\Collection
-    */
-    public function collection()
+   
+    public function query()
     {
-        //return User::select("first_name", "last_name", "email", "join_date", "active", "albums","tracks","language","country","phone_number")->orderBy('id','desc')->get();
-        return DB::table('users')->select("first_name", "last_name", "email", "join_date", "active", "albums","tracks","language","country","phone_number")->orderBy('id','desc')->lazy();
-
+        return User::query()
+                   ->select(
+                    'id',
+                    'first_name',
+                    'last_name',
+                    'email',
+                    'join_date',
+                    'active',
+                    'albums',
+                    'tracks',
+                    'country',
+                    'phone_number'
+                );
     }
 
     public function headings(): array
     {
-        return ["Firstname", "Lastname", "Email", "Joindate", "Active", "Albums","Tracks","Language","Country","Phone Number"];
+        return [
+            "Firstname",
+            "Lastname",
+            "Email",
+            "Joindate",
+            "Active",
+            "Albums",
+            "Tracks",
+            "Language",
+            "Country",
+            "Phone Number"
+        ];
+    }
+
+    public function chunkSize(): int
+    {
+        return 1000; 
     }
 }

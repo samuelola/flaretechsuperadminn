@@ -17,6 +17,7 @@ class NewwAuthController extends Controller
             'email'    => $request->email,
             'password' => $request->password
         ];
+        
         if (Auth::attempt($credentials)) 
         {
             $token = Auth::user()->createToken('auth_token')->plainTextToken;

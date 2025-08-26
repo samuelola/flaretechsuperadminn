@@ -27,7 +27,7 @@
                         </div>
                 </div>
             </div>
-            <p class="mt-16 mb-0 text-secondary-light mb-28">{{$allsub->plan_info_text ?? ''}}</p>
+            <p style="color: #f6f6f7;" class="mt-16 mb-0 text-secondary-light mb-28">{{$allsub->plan_info_text ?? ''}}</p>
             <!-- <h3 class="mb-24" style="color:#f6f6f7;">$99 <span class="fw-medium text-md text-secondary-light">/monthly</span> </h3> -->
             <h3 class="mb-24" style="color:#f6f6f7;font-size: 22px !important;">
                 <?php
@@ -41,23 +41,23 @@
             <ul>
                 <li class="d-flex align-items-center gap-16 mb-16">
                     <span class="w-24-px h-24-px d-flex justify-content-center align-items-center bg-lilac-600 rounded-circle"><iconify-icon icon="iconamoon:check-light" class="text-white text-lg "></iconify-icon></span>
-                    <span class="text-secondary-light text-lg">{{$allsub->artist_no ?? ''}} Artist</span>
+                    <span style="color: #f6f6f7;" class="text-secondary-light text-lg">{{$allsub->artist_no ?? ''}} Artist</span>
                 </li>
                 <li class="d-flex align-items-center gap-16 mb-16">
                     <span class="w-24-px h-24-px d-flex justify-content-center align-items-center bg-lilac-600 rounded-circle"><iconify-icon icon="iconamoon:check-light" class="text-white text-lg "></iconify-icon></span>
-                    <span class="text-secondary-light text-lg">{{$allsub->no_of_tracks ?? ''}} Tracks</span>
+                    <span style="color: #f6f6f7;" class="text-secondary-light text-lg">{{$allsub->no_of_tracks ?? ''}} Tracks</span>
                 </li>
                 <li class="d-flex align-items-center gap-16 mb-16">
                     <span class="w-24-px h-24-px d-flex justify-content-center align-items-center bg-lilac-600 rounded-circle"><iconify-icon icon="iconamoon:check-light" class="text-white text-lg "></iconify-icon></span>
-                    <span class="text-secondary-light text-lg">{{$allsub->no_of_products ?? ''}} Products</span>
+                    <span style="color: #f6f6f7;" class="text-secondary-light text-lg">{{$allsub->no_of_products ?? ''}} Products</span>
                 </li>
                 <li class="d-flex align-items-center gap-16 mb-16">
                     <span class="w-24-px h-24-px d-flex justify-content-center align-items-center bg-lilac-600 rounded-circle"><iconify-icon icon="iconamoon:check-light" class="text-white text-lg "></iconify-icon></span>
-                    <span class="text-secondary-light text-lg">{{$allsub->subscription_limit_per_year ?? ''}} &nbsp; Limit/Year</span>
+                    <span style="color: #f6f6f7;" class="text-secondary-light text-lg">{{$allsub->subscription_limit_per_year ?? ''}} &nbsp; Limit/Year</span>
                 </li>
                 <li class="d-flex align-items-center gap-16 mb-16">
                     <span class="w-24-px h-24-px d-flex justify-content-center align-items-center bg-lilac-600 rounded-circle"><iconify-icon icon="iconamoon:check-light" class="text-white text-lg "></iconify-icon></span>
-                    <span class="text-secondary-light text-lg">Duration &nbsp; {{$allsub->subscription_duration ?? ''}}</span>
+                    <span style="color: #f6f6f7;" class="text-secondary-light text-lg">Duration &nbsp; {{$allsub->subscription_duration ?? ''}}</span>
                 </li>
             </ul>
             <!-- <button type="button" class="bg-lilac-600 bg-hover-lilac-700 text-white text-center border border-lilac-600 text-sm btn-sm px-12 py-10 w-100 radius-8 mt-28" data-bs-toggle="modal" data-bs-target="#exampleModal">Get started</button> -->

@@ -11,24 +11,24 @@
                               ?>
                               
                               <div class="flex-grow-1">
-                                <h6 class="text-md mb-0 fw-medium">{{$rel->first_name}}{{$rel->first_name}}</h6>
+                                <h6 class="text-md mb-0 fw-medium">{{$rel->first_name ?? ''}}{{$rel->first_name ?? ''}}</h6>
                                 <span class="text-sm  fw-medium">{{$rel->email}}</span>
                               </div>
                             </div>
                           </td>
                           <td>{{ \Carbon\Carbon::parse($rel->join_date)->format('d/m/Y')}}</td>
-                          <td>{{$rel->albums}}</td>
-                          <td>{{$rel->tracks}}</td>
+                          <td>{{$rel->albums ?? ''}}</td>
+                          <td>{{$rel->tracks ?? ''}}</td>
                           <td>
                               <?php 
                                  $lang = \DB::table('languages')->where('iso',$rel->language)->first();
-                                 echo $lang->name;
+                                 echo $lang->name ?? '';
                               ?>
                           </td>
                           <td>
                              <?php 
                                  $country = \DB::table('countries')->where('iso2',$rel->country)->first();
-                                 echo $country->name;
+                                 echo $country->name ?? '';
                               ?>
                           </td>
                           <td>

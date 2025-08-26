@@ -11,32 +11,35 @@ use App\Enum\UserStatus;
 use App\Exports\UsersExport;
 use App\Imports\UsersImport;
 use Maatwebsite\Excel\Facades\Excel;
+use Yajra\DataTables\Facades\DataTables;
 
 
 class UserController extends Controller
 {
     public function allUser(Request $request){
 
-        // $get_all_users = DB::table("users")->orderBy('id','desc')->paginate(10);
-        $gget_all_users = User::where('role_id','!=',1)->orderBy('id','desc')->lazy();
+        // this is to check query time
+        // DB::enableQueryLog();
+        // $users = User::distinct('first_name')->count();
+        // $queries = DB::getQueryLog();
+        // dd($queries);
+
         $users = User::distinct('first_name')->count();
-        return view("dashboard.pages.users.allusers",compact('gget_all_users','users'));
+        return view("dashboard.pages.users.allusers",compact('users'));
     }
 
     public function allActiveUser(Request $request){
 
-        // $get_all_users = DB::table("users")->orderBy('id','desc')->paginate(10);
-        $gget_all_users = User::where('active','Yes')->orderBy('id','desc')->get();
         $activeusers = User::distinct('first_name')->where('active','Yes')->count();
-        return view("dashboard.pages.users.allactiveusers",compact('gget_all_users','activeusers'));
+        return view("dashboard.pages.users.allactiveusers",compact('activeusers'));
     }
 
     public function allInactiveUser(Request $request){
 
         // $get_all_users = DB::table("users")->orderBy('id','desc')->paginate(10);
-        $gget_all_users = User::where('active','No')->orderBy('id','desc')->get();
+        // $gget_all_users = User::where('active','No')->orderBy('id','desc')->lazy();
         $noactiveusers = User::distinct('first_name')->where('active','No')->count();
-        return view("dashboard.pages.users.allinactiveusers",compact('gget_all_users','noactiveusers'));
+        return view("dashboard.pages.users.allinactiveusers",compact('noactiveusers'));
     }
 
     public function deleteUser(Request $request, $id){
@@ -47,7 +50,9 @@ class UserController extends Controller
     }
 
     public function addNewUser(Request $request){
-        $all_countries = DB::table('countries')->get();
+        $all_countries = DB::table('countries')
+                         ->orderBy('id','desc')
+                         ->get();
         $languages = DB::table('languages')->get();
         return view("dashboard.pages.users.addnew_user",compact('all_countries','languages'));
     }
@@ -55,7 +60,10 @@ class UserController extends Controller
     public function allState(Request $request)
     {
         $country_id = $request->country_id;
-        $all_states = DB::table('states')->where('country_code',$country_id)->get();
+        $all_states = DB::table('states')
+                      ->where('country_code',$country_id)
+                      ->orderBy('id','desc')
+                      ->get();
         return response([
             'success' => true,
             'data' => $all_states,
