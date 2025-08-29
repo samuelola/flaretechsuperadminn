@@ -882,6 +882,48 @@ function infinteLoadMoreallSub(page) {
   // ================================ Total Transaction line chart End ================================ 
 </script>
 
+
+<script>
+    var ENDPOINT = "{{ route('dashboard') }}";
+    var page = 1;
+  
+    $(".load-more-tranxdata").click(function(){
+        page++;
+        infinteLoadMorertranx(page);
+    });
+    
+  
+    /*------------------------------------------
+    --------------------------------------------
+    call infinteLoadMore()
+    --------------------------------------------
+    --------------------------------------------*/
+    function infinteLoadMorertranx(page) {
+        $.ajax({
+                url: ENDPOINT + "?page=" + page,
+                datatype: "html",
+                type: "get",
+                beforeSend: function () {
+                    $('.auto-tranxload').show();
+                }
+            })
+            .done(function (response) {
+
+                console.log(response.newhtmltransaction);
+                if (response.newhtmltransaction == '') {
+                    $('.auto-tranxload').html("We don't have more data to display :(");
+                    return;
+                }
+
+                $('.auto-tranxload').hide();
+                $("#data-tranxwrapper").append(response.newhtmltransaction);
+            })
+            .fail(function (jqXHR, ajaxOptions, thrownError) {
+                console.log('Server error occured');
+            });
+    }
+</script>
+
 @yield('script')
 
 </body>

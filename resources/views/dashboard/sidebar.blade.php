@@ -162,13 +162,15 @@
       </li> -->
 
 
-      <!-- <li>
-        <a href="#">
-        <iconify-icon icon="material-symbols-light:track-changes" width="16" height="16"></iconify-icon>
-           <span>Labels</span> 
+      <li>
+        <a href="{{route('transactions')}}">
+        <iconify-icon icon="tdesign:undertake-transaction" width="16" height="16"></iconify-icon>
+           <span>Transactions</span> 
         </a>
        
-      </li> -->
+      </li>
+
+      
 
 
       <!-- <li class="dropdown">

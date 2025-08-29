@@ -11,6 +11,8 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\TransactionController;
+
 
 Route::middleware('check.user')->group(function () {
     Route::get('/dashboardd', [DashboardController::class,'showDashboardd'])->name('dashboardd');
@@ -85,6 +87,8 @@ Route::middleware('superadmincheck')->group(function () {
     Route::get('/payment',[PaymentController::class,'Payments'])->name('payment');
     Route::get('/earnings',[PaymentController::class,'Earnings'])->name('earnings');
     Route::get('/split_sheet',[PaymentController::class,'splitSheet'])->name('split_sheet');
+
+    Route::get('/transactions',[TransactionController::class,'transactions'])->name('transactions');
     
 });
 
