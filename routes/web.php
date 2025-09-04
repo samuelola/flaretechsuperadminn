@@ -19,76 +19,110 @@ Route::middleware('check.user')->group(function () {
 });
 
 Route::middleware('superadmincheck')->group(function () {
-    Route::get('/dashboard', [DashboardController::class,'showDashboard'])->name('dashboard');
-    Route::post('/logout',[DashboardController::class,'logout'])->name('dashboard.logout');
-    Route::get('/analytics', [DashboardController::class,'analytics'])->name('analytics');
-    Route::get('/profile', [DashboardController::class,'profile'])->name('profile');
-    Route::post('/update_profile',[FileUploadController::class,'updateProfile'])->name('update_profile');
-    Route::post('/user_update_profile/{id}',[FileUploadController::class,'userUpdateProfile'])->name('update_user_profile');
-    Route::get('/subscription', [SubscriptionController::class,'subscription_form'])->name('subscription');
-    Route::get('/all_subscription', [SubscriptionController::class,'allsubscription'])->name('allsubscription');
-    Route::get('/choosesubscription', [SubscriptionController::class,'choosesubscription'])->name('choosesubscription');
-    Route::post('/add_subscription', [SubscriptionController::class,'add_subscription'])->name('add_subscription');
-    Route::get('/edit_subscription/{id}', [SubscriptionController::class,'edit_subscription'])->name('edit_subscription');
-    Route::get('/view_user/{id}', [DashboardController::class,'viewDashboard'])->name('viewdashboardusers');
-    Route::post('change-password/{id}',[ChangePasswordController::class,'store'])->name('change.password');
-    Route::post('change_user_password/{id}',[ChangePasswordController::class,'storeUserPassword'])->name('change.user.password');
-    Route::get('/users',[UserController::class,'allUser'])->name('allUser');
-    Route::get('/add_new_user',[UserController::class,'addNewUser'])->name('add_new_user');
-    Route::delete('/delete_user/{id}',[UserController::class,'deleteUser'])->name('deleteUser');
-    Route::post('/editSub/{id}',[SubscriptionController::class,'editSub'])->name('editSub');
-    Route::get('/filter_info',[DashboardController::class,'filterInfo'])->name('filter_info');
-    Route::get('/alltracks',[DashboardController::class,'allTracks'])->name('allTracks');
-    Route::get('/view_tracks/{id}',[DashboardController::class,'viewTracks'])->name('view_tracks');
-    Route::get('/states', [UserController::class,'allState'])->name('all_states');
-    Route::post('/create_user', [UserController::class,'createUser'])->name('create_user');
-    Route::get('/active_user', [UserController::class,'allActiveUser'])->name('allActiveUser');
-    Route::get('/inactive_user', [UserController::class,'allInactiveUser'])->name('allInactiveUser');
-    Route::get('users-export', [UserController::class,'export'])->name('users.export');
-    Route::get('admin_analytics', [AnalyticsController::class,'adminAnalytics'])->name('admin_analytics');
-    Route::get('/filter_artist',[AnalyticsController::class,'filterArtistInfo'])->name('filter_artist');
-    Route::get('/filter_artist_track',[AnalyticsController::class,'filterArtistTrackInfo'])->name('filter_artist_track');
-    Route::get('/filter_artist_album',[AnalyticsController::class,'filterArtistAlbum'])->name('filter_artist_album');
+
+    Route::controller(DashboardController::class)->group(function () {
+        Route::get('/dashboard', 'showDashboard')->name('dashboard');
+        Route::post('/logout','logout')->name('dashboard.logout');
+        Route::get('/analytics','analytics')->name('analytics');
+        Route::get('/profile','profile')->name('profile');
+        Route::get('/filter_info','filterInfo')->name('filter_info');
+        Route::get('/view_user/{id}','viewDashboard')->name('viewdashboardusers');
+        Route::get('/alltracks','allTracks')->name('allTracks');
+        Route::get('/view_tracks/{id}','viewTracks')->name('view_tracks');
+    });
+
+    Route::controller(UserController::class)->group(function () {
+        Route::get('/users','allUser')->name('allUser');
+        Route::get('/add_new_user','addNewUser')->name('add_new_user');
+        Route::delete('/delete_user/{id}','deleteUser')->name('deleteUser');
+        Route::get('/states','allState')->name('all_states');
+        Route::post('/create_user','createUser')->name('create_user');
+        Route::get('/active_user','allActiveUser')->name('allActiveUser');
+        Route::get('/inactive_user','allInactiveUser')->name('allInactiveUser');
+        Route::get('users-export','export')->name('users.export');
+        Route::get('/all_deleted_user','alldeletedUser')->name('all_deleted_user');
+        Route::post('/deleted_userCompletely','deleted_userCompletely')->name('deleted_userCompletely');
+        Route::post('/restore_userCompletely','restore_userCompletely')->name('restore_userCompletely');
+
+    });
+
+    Route::controller(FileUploadController::class)->group(function () {
+        Route::post('/update_profile','updateProfile')->name('update_profile');
+        Route::post('/user_update_profile/{id}','userUpdateProfile')->name('update_user_profile');
+
+    });
+
+    Route::controller(SubscriptionController::class)->group(function () {
+         
+         Route::get('/subscription','subscription_form')->name('subscription');
+         Route::get('/all_subscription','allsubscription')->name('allsubscription');
+         Route::get('/choosesubscription','choosesubscription')->name('choosesubscription');
+         Route::post('/add_subscription','add_subscription')->name('add_subscription');
+         Route::get('/edit_subscription/{id}','edit_subscription')->name('edit_subscription');
+         Route::post('/editSub/{id}','editSub')->name('editSub');
+    });
     
-    Route::get('/manage_role', [RoleController::class,'manageRole'])->name('manage_role');
-    Route::post('/create_role', [RoleController::class,'createRole'])->name('create_role');
-    Route::post('/delete_role', [RoleController::class,'deleteRole'])->name('delete_role');
-    Route::post('/update_role', [RoleController::class,'updateRole'])->name('update_role');
+    Route::controller(PermissionController::class)->group(function () {
 
+        Route::get('/manage_permission','managePermission')->name('manage_permission');
+        Route::post('/create_permission','createPermission')->name('create_permission');
+        Route::post('/delete_permission','deletePermission')->name('delete_permission');
+        Route::post('/update_permission','updatePermission')->name('update_permission');
 
-    Route::get('/manage_permission', [PermissionController::class,'managePermission'])->name('manage_permission');
-    Route::post('/create_permission', [PermissionController::class,'createPermission'])->name('create_permission');
-    Route::post('/delete_permission', [PermissionController::class,'deletePermission'])->name('delete_permission');
-    Route::post('/update_permission', [PermissionController::class,'updatePermission'])->name('update_permission');
-
-    // assign permission to role 
-    Route::get('/assign_permission_role', [PermissionController::class,'assignPermissionRole'])->name('assign_permission_role');
-    Route::post('/create_permission_role', [PermissionController::class,'createPermissionRole'])->name('create_permission_role');
-    Route::get('/edit_permission_role/{id}', [PermissionController::class,'editPermissionRole'])->name('edit_permission_role');
-    Route::post('/update_permission_role', [PermissionController::class,'updatePermissionRole'])->name('update_permission_role');
-    Route::post('/delete_permission_role', [PermissionController::class,'deletePermissionRole'])->name('delete_permission_role');
+        // assign permission to role 
+        Route::get('/assign_permission_role','assignPermissionRole')->name('assign_permission_role');
+        Route::post('/create_permission_role','createPermissionRole')->name('create_permission_role');
+        Route::get('/edit_permission_role/{id}','editPermissionRole')->name('edit_permission_role');
+        Route::post('/update_permission_role','updatePermissionRole')->name('update_permission_role');
+        Route::post('/delete_permission_role','deletePermissionRole')->name('delete_permission_role');
+        
+        // assign permission to route
+        Route::get('/assign_permission_route','assignPermissionRoute')->name('assign_permission_route');
+        Route::post('/create_permission_route','createPermissionRoute')->name('create_permission_route');
+        Route::get('/edit_permission_route/{id}','editPermissionRoute')->name('edit_permission_route');
+        Route::post('/update_permission_route','updatePermissionRoute')->name('update_permission_route');
     
-    // assign permission to route
-    Route::get('/assign_permission_route', [PermissionController::class,'assignPermissionRoute'])->name('assign_permission_route');
-    Route::post('/create_permission_route', [PermissionController::class,'createPermissionRoute'])->name('create_permission_route');
-    Route::get('/edit_permission_route/{id}', [PermissionController::class,'editPermissionRoute'])->name('edit_permission_route');
-    Route::post('/update_permission_route', [PermissionController::class,'updatePermissionRoute'])->name('update_permission_route');
-
-    Route::get('/all_deleted_user',[UserController::class,'alldeletedUser'])->name('all_deleted_user');
-    Route::post('/deleted_userCompletely',[UserController::class,'deleted_userCompletely'])->name('deleted_userCompletely');
-    Route::post('/restore_userCompletely',[UserController::class,'restore_userCompletely'])->name('restore_userCompletely');
-
-
-    Route::get('/settings',[SettingsController::class,'settings'])->name('settings');
-    Route::post('/createsettings',[SettingsController::class,'createsettings'])->name('createsettings');
-    Route::post('/updatesettings',[SettingsController::class,'updatesettings'])->name('updatesettings');
-    Route::post('/apiexchangerate',[SettingsController::class,'apiexchangerate'])->name('apiexchangerate');
-
-    Route::get('/payment',[PaymentController::class,'Payments'])->name('payment');
-    Route::get('/earnings',[PaymentController::class,'Earnings'])->name('earnings');
-    Route::get('/split_sheet',[PaymentController::class,'splitSheet'])->name('split_sheet');
-
-    Route::get('/transactions',[TransactionController::class,'transactions'])->name('transactions');
+    });
+    
+    Route::controller(ChangePasswordController::class)->group(function () {
+          Route::post('change-password/{id}','store')->name('change.password');
+          Route::post('change_user_password/{id}','storeUserPassword')->name('change.user.password');
+    });
+    
+    Route::controller(AnalyticsController::class)->group(function () {
+         Route::get('admin_analytics','adminAnalytics')->name('admin_analytics');
+         Route::get('/filter_artist','filterArtistInfo')->name('filter_artist');
+         Route::get('/filter_artist_track','filterArtistTrackInfo')->name('filter_artist_track');
+         Route::get('/filter_artist_album','filterArtistAlbum')->name('filter_artist_album');
+    });
+    
+    Route::controller(RoleController::class)->group(function () {
+         Route::get('/manage_role','manageRole')->name('manage_role');
+         Route::post('/create_role','createRole')->name('create_role');
+         Route::post('/delete_role','deleteRole')->name('delete_role');
+         Route::post('/update_role','updateRole')->name('update_role');
+    });
+    
+    Route::controller(SettingsController::class)->group(function () {
+        
+         Route::get('/settings','settings')->name('settings');
+         Route::post('/createsettings','createsettings')->name('createsettings');
+         Route::post('/updatesettings','updatesettings')->name('updatesettings');
+         Route::post('/apiexchangerate','apiexchangerate')->name('apiexchangerate');
+    });
+    
+    Route::controller(PaymentController::class)->group(function () {
+         Route::get('/payment','Payments')->name('payment');
+         Route::get('/earnings','Earnings')->name('earnings');
+         Route::get('/split_sheet','splitSheet')->name('split_sheet');
+    });
+    
+    
+    Route::controller(TransactionController::class)->group(function () {
+        Route::get('/transactions','transactions')->name('transactions');
+    });
+    
+    
     
 });
 

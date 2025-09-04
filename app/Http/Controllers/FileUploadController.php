@@ -26,11 +26,7 @@ class FileUploadController extends Controller
             return redirect()->back()->with('success','Profile Updated Successful'); 
         }
 
-            DB::table('users')
-            ->where('email', auth()->user()->email)  // find your user by their email
-            ->limit(1)
-            ->update(['first_name' => $request->first_name,'last_name'=> $request->last_name,'email'=>$request->email]);  // update the record in the DB. 
-            return redirect()->back()->with('success','Profile Updated Successful'); 
+            
     }
 
     public function userUpdateProfile(Request $request, $id)
