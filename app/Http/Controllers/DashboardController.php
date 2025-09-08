@@ -42,6 +42,7 @@ class DashboardController extends Controller
         $get_all_users = (clone($baseQuery1))->orderBy('id','desc')->paginate(10);
         $subscribers = (clone $baseSubQuery)->distinct('email')->orderBy('id','desc')->paginate(10);
         $plans = DB::table('subscription_plan')->orderBy('id','asc')->paginate(10);
+        
 
         if ($request->ajax()) {
             $view = view('dashboard.pages.data', compact('subscribers'))->render();
@@ -75,6 +76,8 @@ class DashboardController extends Controller
 
         $thecountry = DB::table('countries')
         ->get();
+
+        
 
         return view('dashboard.pages.home',compact(
             'users',

@@ -49,12 +49,21 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class);
     }
 
-    public function lang(){
-        return $this->belongsTo(Language::class,'language','iso');
-    }
+    
 
     public function hasPermissionRole($permission): bool
     {
         return $this->role->permissions()->where('name', $permission)->exists();
+    }
+
+    public function lang(){
+        return $this->belongsTo(Language::class,'language','iso');
+    }
+    public function country(){
+        return $this->belongsTo(Country::class);
+    }
+
+    public function state(){
+        return $this->belongsTo(State::class);
     }
 }
