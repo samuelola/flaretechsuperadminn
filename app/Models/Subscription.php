@@ -10,4 +10,5 @@ class Subscription extends Model
     use HasFactory;
     protected $guarded = [];
     protected $table = 'subscription_plan';
+
 }

@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Auth;
 use RealRashid\SweetAlert\Facades\Alert;
 use App\Models\User;
+use App\Models\Transaction;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Crypt;
@@ -27,12 +28,18 @@ class DashboardController extends Controller
         
         $baseQuery = DB::table('users');
         $baseQuery1 = DB::table('users')->where('role_id','!=',1);
-        $baseSubQuery = DB::table("subscription_payment_details");
+        $baseSubQuery = DB::table("transactions");
         $get_yearr =  DB::raw('YEAR(join_date)as year');
         $users = (clone $baseQuery)->distinct('first_name')->count();
         $users_count_last_30days = (clone $baseQuery)->where('created_at', '>', now()->subDays(30)->endOfDay())->count();
-        $total_subscription = (clone $baseSubQuery)->count();
-        $total_subscription_last_30days = (clone $baseSubQuery)->where('paymentdate', '>', now()->subDays(30)->endOfDay())->count();
+        $total_subscription = (clone $baseSubQuery)->where('remarks','Subscription Payment')->count();
+        $total_subscription_last_30days = (clone $baseSubQuery)
+            ->where([
+                ['created_at', '>', now()->subDays(30)->startOfDay()],
+                ['remarks', '=', 'Subscription Payment'],
+            ])
+            ->count();      
+        
         $total_albums =  (clone($baseQuery))->sum('albums');
         $total_albumss = (int)$total_albums;
         $total_tracks = DB::table("trackdetails")->where(['ReleaseCount'=>0,'ReleaseCount'=>1])->distinct('UserName')->count();
@@ -40,7 +47,9 @@ class DashboardController extends Controller
         $total_labels = DB::table("labeldetails")->count();
         $total_labelss = (int)$total_labels;
         $get_all_users = (clone($baseQuery1))->orderBy('id','desc')->paginate(10);
-        $subscribers = (clone $baseSubQuery)->distinct('email')->orderBy('id','desc')->paginate(10);
+        // $subscribers = (clone $baseSubQuery)->distinct('email')->orderBy('id','desc')->paginate(10);
+        $subscribers = Transaction::where('remarks','Subscription Payment')
+                        ->with('user','subscription')->orderBy('id','desc')->paginate(10);
         $plans = DB::table('subscription_plan')->orderBy('id','asc')->paginate(10);
         
 

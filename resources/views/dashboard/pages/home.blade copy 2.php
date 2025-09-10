@@ -348,12 +348,15 @@
                         <tr>
                           <th scope="col">Subscribers </th>
                           <th scope="col">Payment Date</th>
-                          <th scope="col">Reference</th>
-                          <th scope="col">Method</th>
+                          <th scope="col">Invoice Number</th>
+                          <th scope="col">Country</th>
+                          <th scope="col">Mobile Number</th>
+                          <th scope="col">Partner Name</th>
+                          <th scope="col">Paid By</th>
                           <th scope="col">Plan Name</th>
-                          <th scope="col">Amount Paid (&#8358;)</th>
-                          
-                          
+                          <th scope="col">Amount Paid</th>
+                          <th scope="col">Paid Through</th>
+                          <th scope="col">Subscription Amount</th>
                           
                         </tr>
                       </thead>
