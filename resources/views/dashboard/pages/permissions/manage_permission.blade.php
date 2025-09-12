@@ -69,7 +69,7 @@
                                 <td>
                                 
                                     <button data-id ="{{$permission->id}}" data-name="{{$permission->name}}" class="bg-info-focus text-info-main px-32 py-4 rounded-pill fw-medium text-sm editPermissionBtn" data-bs-toggle="modal" data-bs-target="#editPermissionModal">Edit</button>
-                                    <button data-id ="{{$permission->id}}" data-name="{{$permission->name}}" class="bg-danger-focus text-danger-main px-32 py-4 rounded-pill fw-medium text-sm deletePermissionBtn" data-bs-toggle="modal" data-bs-target="#deletePermissionModal">Delete</button>
+                                    <!-- <button data-id ="{{$permission->id}}" data-name="{{$permission->name}}" class="bg-danger-focus text-danger-main px-32 py-4 rounded-pill fw-medium text-sm deletePermissionBtn" data-bs-toggle="modal" data-bs-target="#deletePermissionModal">Delete</button> -->
                                    
                                 </td>
                             </tr>
@@ -95,10 +95,12 @@
                      <div class="modal-header">
                             <h1 class="modal-title fs-5" id="exampleModalLabel">Create Permission</h1>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
                         </div>
                         <div class="modal-body">
                             <label class="form-label">Permission</label>
                             <input type="text" name="name" id="name" class="form-control" placeholder="Enter Permission" value="{{ old('name') }}">
+                            <span class="text-danger error-text name_error"></span>
                             
                         </div>
 
@@ -210,6 +212,16 @@
                        location.reload();
                     }else{
                        alert(response.msg)
+                    }
+                },
+                error: function (xhr) {
+                    if (xhr.status === 422) {
+                        // Validation error
+                        $.each(xhr.responseJSON.errors, function (key, value) {
+                            $('.' + key + '_error').text(value[0]);
+                        });
+                    } else {
+                        alert("Unexpected Error: " + xhr.responseText);
                     }
                 }
             })

@@ -154,18 +154,20 @@
     @endif
       
 
-      <!-- <li>
-        <a href="{{route('assign_permission_route')}}">
-        <iconify-icon icon="icon-park:permissions" width="16" height="16" class="menu-icon"></iconify-icon>
-           <span>Assign Permission Route</span> 
-        </a>
-      </li> -->
-
+      
 
       <li>
         <a href="{{route('transactions')}}">
         <iconify-icon icon="tdesign:undertake-transaction" width="16" height="16"></iconify-icon>
            <span>Transactions</span> 
+        </a>
+       
+      </li>
+
+      <li>
+        <a href="{{route('posts.index')}}">
+        <iconify-icon icon="tdesign:undertake-transaction" width="16" height="16"></iconify-icon>
+           <span>Post</span> 
         </a>
        
       </li>

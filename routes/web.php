@@ -12,6 +12,8 @@ use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\UploadController;
 
 
 Route::middleware('check.user')->group(function () {
@@ -122,6 +124,12 @@ Route::middleware('superadmincheck')->group(function () {
         Route::get('/transactions','transactions')->name('transactions');
     });
     
+    Route::resource('posts', PostController::class);
+
+    Route::controller(UploadController::class)->group(function () {
+        Route::post('/upload/image','upload')->name('upload.image');
+    });
+
     
     
 });

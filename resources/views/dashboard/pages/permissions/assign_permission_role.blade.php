@@ -72,7 +72,7 @@
                                       </td>
                                       <td>
                                           <a href="{{route('edit_permission_role',['id'=>$permission->id])}}" class="bg-info-focus text-info-main px-32 py-4 rounded-pill fw-medium text-sm">Edit</a>
-                                          <button data-id ="{{$permission->id}}" data-name="{{$permission->name}}" class="bg-danger-focus text-danger-main px-32 py-4 rounded-pill fw-medium text-sm deletePermissionBtn" data-bs-toggle="modal" data-bs-target="#deletePermissionRoleModal">Delete</button>
+                                          <!-- <button data-id ="{{$permission->id}}" data-name="{{$permission->name}}" class="bg-danger-focus text-danger-main px-32 py-4 rounded-pill fw-medium text-sm deletePermissionBtn" data-bs-toggle="modal" data-bs-target="#deletePermissionRoleModal">Delete</button> -->
                                       </td>
                                    </tr>
                                 @endforeach
