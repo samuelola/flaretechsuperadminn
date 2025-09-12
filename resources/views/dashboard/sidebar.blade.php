@@ -107,7 +107,7 @@
 
       <li>
         <a href="{{route('allTracks')}}">
-        <iconify-icon icon="material-symbols-light:track-changes" width="16" height="16" class="menu-icon"></iconify-icon>
+        <iconify-icon icon="material-symbols-light:track-changes" width="20" height="20" class="menu-icon"></iconify-icon>
            <span>Tracks</span> 
         </a>
        
@@ -127,7 +127,7 @@
       <li>
         <a href="{{route('manage_role')}}">
         
-        <iconify-icon icon="oui:app-users-roles" width="16" height="16" class="menu-icon"></iconify-icon>
+        <iconify-icon icon="oui:app-users-roles" width="20" height="20" class="menu-icon"></iconify-icon>
            <span>Roles</span> 
         </a>
        
@@ -138,7 +138,7 @@
     @if(!empty($permissionPermissions)) 
        <li class="dropdown">
         <a href="javascript:void(0)">
-        <iconify-icon icon="icon-park:permissions" width="16" height="16" class="menu-icon"></iconify-icon>
+        <iconify-icon icon="icon-park:permissions" width="20" height="20" class="menu-icon"></iconify-icon>
           <span>Permissions</span> 
         </a>
         <ul class="sidebar-submenu">
@@ -158,7 +158,7 @@
 
       <li>
         <a href="{{route('transactions')}}">
-        <iconify-icon icon="tdesign:undertake-transaction" width="16" height="16"></iconify-icon>
+        <iconify-icon icon="tdesign:undertake-transaction" width="16" height="16" class="menu-icon"></iconify-icon>
            <span>Transactions</span> 
         </a>
        
@@ -166,7 +166,7 @@
 
       <li>
         <a href="{{route('posts.index')}}">
-        <iconify-icon icon="tdesign:undertake-transaction" width="16" height="16"></iconify-icon>
+        <iconify-icon icon="arcticons:canada-post" width="16" height="16" class="menu-icon"></iconify-icon>
            <span>Post</span> 
         </a>
        
@@ -214,18 +214,18 @@
 
       <li class="dropdown">
         <a href="javascript:void(0)" class="menu-icon">
-        <iconify-icon icon="hugeicons:payment-02" width="16" height="16" style="margin-inline-end: 0.4rem;"></iconify-icon>
+        <iconify-icon icon="hugeicons:payment-02" width="16" height="16" style="margin-inline-end: 0.4rem;" class="menu-icon"></iconify-icon>
           <span>Payout</span> 
         </a>
         <ul class="sidebar-submenu">
           <li>
             <a href="{{route('payment')}}">
-              <iconify-icon icon="bi:dash" width="16" height="16"></iconify-icon>
+              <iconify-icon icon="bi:dash" width="16" height="16"class="menu-icon"></iconify-icon>
               Payments</a>
           </li>
           <li>
             <a href="{{route('earnings')}}">
-              <iconify-icon icon="bi:dash" width="16" height="16"></iconify-icon>
+              <iconify-icon icon="bi:dash" width="16" height="16" class="menu-icon"></iconify-icon>
               Earnings</a>
           </li>
           <!-- <li>
@@ -238,13 +238,13 @@
 
       <li class="dropdown">
         <a href="javascript:void(0)" class="menu-icon">
-        <iconify-icon icon="material-symbols-light:settings-outline" width="16" height="16" style="margin-inline-end: 0.4rem;"></iconify-icon>  
+        <iconify-icon icon="material-symbols-light:settings-outline" width="16" height="16" style="margin-inline-end: 0.4rem;" class="menu-icon"></iconify-icon>  
           <span>Settings</span> 
         </a>
         <ul class="sidebar-submenu">
           <li>
             <a href="{{route('settings')}}">
-              <iconify-icon icon="bi:dash" width="16" height="16"></iconify-icon>
+              <iconify-icon icon="bi:dash" width="16" height="16" class="menu-icon"></iconify-icon>
               API</a>
           </li>
         </ul>
@@ -253,7 +253,7 @@
       
       <li>
         <a href="{{ route('dashboard.logout') }}" onclick="event.preventDefault(); document.getElementById('frm-logout').submit();">
-         <iconify-icon icon="lucide:power" class="menu-icon"></iconify-icon>
+         <iconify-icon icon="lucide:power" class="menu-icon" class="menu-icon"></iconify-icon>
            <span>Logout</span> 
         </a>
         <form id="frm-logout" action="{{ route('dashboard.logout') }}" method="POST" style="display: none;">

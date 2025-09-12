@@ -121,6 +121,13 @@
         filebrowserUploadUrl: "{{ route('upload.image') }}?_token={{ csrf_token() }}",
         filebrowserImageUploadUrl: "{{ route('upload.image') }}?_token={{ csrf_token() }}",
     });
+
+    CKEDITOR.on('instanceReady', function(evt) {
+  // Override notification system to disable warnings
+        evt.editor.showNotification = function() {
+          return { update: function(){}, hide: function(){} };
+        };
+      });
 </script>
 @endsection
 
