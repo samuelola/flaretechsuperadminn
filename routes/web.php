@@ -16,6 +16,16 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\UploadController;
 
 
+
+Route::get('/ping', function () {
+    return response()->json(['status' => 'ok']);
+});
+
+Route::get('/refresh-csrf', function () {
+    return response()->json(['csrf_token' => csrf_token()]);
+})->middleware('refresh_token');
+
+
 Route::middleware('check.user')->group(function () {
     Route::get('/dashboardd', [DashboardController::class,'showDashboardd'])->name('dashboardd');
 });

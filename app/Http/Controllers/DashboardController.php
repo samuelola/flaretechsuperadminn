@@ -16,6 +16,9 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Cache;
 
+use App\Mail\TestMail;
+use Illuminate\Support\Facades\Mail;
+
 
 class DashboardController extends Controller
 {
@@ -25,6 +28,25 @@ class DashboardController extends Controller
     
     public function showDashboard(Request $request)
     {
+
+        // send testing email to oladele
+
+        // $details = [
+        //     'title' => 'Mail from Laravel SMTP Tutorial',
+        //     'body' => 'This is a test email sent via SMTP in Laravel.'
+        // ];
+
+        // $rr = Mail::to('oladelesamuel48@gmail.com')->send(new TestMail($details));
+
+        // if($rr){
+        //    dd('Email sent');
+        // }else{
+        //     dd('Email not sent');
+        // }
+
+        
+
+
         
         $baseQuery = DB::table('users');
         $baseQuery1 = DB::table('users')->where('role_id','!=',1);

@@ -9,6 +9,23 @@
   </div>
 </footer>
 </main>
+@php
+
+$plan_count = \DB::table('subscription_payment_details')
+     ->select(\DB::raw('count(*) as sub_count'))
+     ->groupBy('Planname')
+     ->get();
+
+$planname = \DB::table('subscription_payment_details')
+     ->select(\DB::raw('Planname'))
+     ->groupBy('Planname')
+     ->get();
+
+$countvalue = $plan_count->pluck('sub_count')->toArray();
+$planvalue = $planname->pluck('Planname')->toArray();
+  
+
+@endphp
 
   <!-- jQuery library js -->
   <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
@@ -53,6 +70,8 @@
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script> 
+<script src="{{asset('assets/js/refresh_token.js')}}"></script>
+<script src="{{asset('assets/js/ping_code.js')}}"></script>
 
 <script>
    var options = {
@@ -191,34 +210,7 @@ chart.render();
                  
   ?>
   var options = {
-      // series: [{
-      //     name: "Sales",
-      //     data: [{
-      //         "x": "Sun",
-      //         "y": "15",
-      //     }, {
-      //         "x": "Mon",
-      //         "y": "12",
-      //     }, {
-      //         "x": "Tue",
-      //         "y": "18",
-      //     }, {
-      //         "x": "Wed",
-      //         "y": "20",
-      //     }, {
-      //         "x": "Thu",
-      //         "y": "13",
-      //     }, {
-      //         "x": "Fri",
-      //         "y": "16",
-      //     }, {
-      //         "x": "Sat",
-      //         "y": "6",
-      //     }]
-      // }],
-
-     
-
+      
       series: [{
           name: "Sales",
           data: <?php
@@ -290,98 +282,13 @@ chart.render();
 </script>
 
 <script>
-
-// ================================ Users Overview Donut chart Start ================================ 
-
-<?php
-
-$plan_count = \DB::table('subscription_payment_details')
-     ->select(\DB::raw('count(*) as sub_count'))           
-     ->groupBy('Planname')
-     ->get();
-     $planname = \DB::table('subscription_payment_details')
-     ->select(\DB::raw('Planname'))           
-     ->groupBy('Planname')
-     ->get();
-
-     $countvalue = [];              
-     foreach($plan_count as $dd){
-         $countvalue[] = $dd->sub_count;
-     }
-
-     $planvalue = [];              
-     foreach($planname as $dd){
-         $planvalue[] = $dd->Planname;
-     }
-
-     $c=array_combine($planvalue,$countvalue);    
-  
-
-?>
-
-var options = { 
-      series: [
-        <?php 
-               foreach ($countvalue as $key => $valuey) {
-                  echo "$valuey,";
-               }
-             ?>
-      ],
-      colors: ['#FF9F29', '#487FFF', '#1E3A8A'],
-      labels: [
-        <?php 
-               foreach ($planvalue as $key => $value) {
-                  echo "'$value',";
-              }
-        ?>
-        
-      ] ,
-      legend: {
-          show: true
-      },
-      chart: {
-        type: 'donut',    
-        height: 270,
-        sparkline: {
-          enabled: true // Remove whitespace
-        },
-        margin: {
-            top: 0,
-            right: 0,
-            bottom: 0,
-            left: 0
-        },
-        padding: {
-          top: 0,
-          right: 0,
-          bottom: 0,
-          left: 0
-        }
-      },
-      stroke: {
-        width: 0,
-      },
-      dataLabels: {
-        enabled: false
-      },
-      responsive: [{
-        breakpoint: 480,
-        options: {
-          chart: {
-            width: 200
-          },
-          legend: {
-            position: 'bottom'
-          }
-        }
-      }],
+    window.chartData = {
+        series: {!! json_encode($countvalue) !!},
+        labels: {!! json_encode($planvalue) !!}
     };
-
-    var chart = new ApexCharts(document.querySelector("#userOverviewDonutChart"), options);
-    chart.render();
-  // ================================ Users Overview Donut chart End ================================ 
-
 </script>
+
+<script src="{{ asset('assets/js/users_sub_chart.js') }}"></script>
 
 <script>
         $(document).ready(function() {

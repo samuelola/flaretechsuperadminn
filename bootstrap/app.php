@@ -15,6 +15,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'check.user' => \App\Http\Middleware\CheckUser::class,
             'superadmincheck' => \App\Http\Middleware\SuperadminCheck::class,
+            'refresh_token'  =>   \App\Http\Middleware\RefreshCsrfToken::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

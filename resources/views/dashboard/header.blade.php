@@ -51,6 +51,60 @@
     <script type="text/javascript"src="https://cdn.jsdelivr.net/npm/amplitudejs@5.3.2/dist/amplitude.js"></script>
     
     <style>
+    .status {
+      display: none;
+      /*padding: 12px 20px;*/
+      padding: 0px 0px;
+      border-radius: 8px;
+      margin: 10px auto;
+      font-weight: bold;
+      text-align: center;
+      width: 280px;
+      transition: opacity 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .online { background: #d1fae5; color: #065f46; border: 1px solid #10b981; }
+    .offline { background: #fee2e2; color: #991b1b; border: 1px solid #ef4444; }
+    .loading { background: #e0e7ff; color: #3730a3; border: 1px solid #6366f1; }
+
+    /* Spinner */
+    .spinner {
+      width: 18px;
+      height: 18px;
+      border: 3px solid rgba(0,0,0,0.2);
+      border-top: 3px solid currentColor;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin { 100% { transform: rotate(360deg); } }
+
+    /* Toast container */
+    .toast-container {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      z-index: 1000;
+    }
+    .toast {
+      padding: 12px 16px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      color: white;
+      min-width: 220px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      animation: slideIn 0.4s ease, fadeOut 0.5s ease 3.5s forwards;
+    }
+    .toast.success { background: #10b981; }
+    .toast.error { background: #ef4444; }
+    @keyframes slideIn { from { opacity: 0; transform: translateX(100%); } to { opacity: 1; transform: translateX(0); } }
+    @keyframes fadeOut { to { opacity: 0; transform: translateX(100%); } }
 .switch {
   position: relative;
   display: inline-block;
