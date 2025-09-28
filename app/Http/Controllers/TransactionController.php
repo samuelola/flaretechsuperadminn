@@ -20,7 +20,7 @@ class TransactionController extends Controller
 {
     public function transactions(Request $request){
         
-        $get_transactions = Transaction::with(['user'])
+        $get_transactions = Transaction::with(['user','subscription'])
                                          ->orderBy('id','desc')
                                          ->paginate(10);
 

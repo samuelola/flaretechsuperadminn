@@ -53,7 +53,7 @@
                 </li>
                 <li class="d-flex align-items-center gap-16 mb-16">
                     <span class="w-24-px h-24-px d-flex justify-content-center align-items-center bg-lilac-600 rounded-circle"><iconify-icon icon="iconamoon:check-light" class="text-white text-lg "></iconify-icon></span>
-                    <span style="color: #f6f6f7;" class="text-secondary-light text-lg">{{$allsub->subscription_limit_per_year ?? ''}} &nbsp; Limit/Year</span>
+                    <span style="color: #f6f6f7;" class="text-secondary-light text-lg">{{$allsub->uploads ?? ''}} &nbsp;Upload</span>
                 </li>
                 <li class="d-flex align-items-center gap-16 mb-16">
                     <span class="w-24-px h-24-px d-flex justify-content-center align-items-center bg-lilac-600 rounded-circle"><iconify-icon icon="iconamoon:check-light" class="text-white text-lg "></iconify-icon></span>

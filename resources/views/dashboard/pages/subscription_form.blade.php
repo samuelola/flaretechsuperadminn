@@ -83,7 +83,7 @@
 
             <div class="row gy-3 mt-2">  
               <div class="col-md-6">
-                <label class="form-label">Stock Keeping Unit</label>
+                <label class="form-label">Stock Keeping Unit (optional)</label>
                 <input value="{{ old('stock_keeping_unit') }}" type="number" name="stock_keeping_unit" class="form-control" placeholder="Enter Stock Keeping Unit">
                 @error('stock_keeping_unit')
                 <span class="invalid-feedback d-block" role="alert"><strong>{{ $message }}</strong></span>
@@ -102,6 +102,192 @@
                 @enderror
               </div>
             </div> 
+
+            <div class="row gy-3 mt-2">  
+              <div class="col-md-6">
+                <label class="form-label">Support</label>
+                <input  type="text" name="support" class="form-control" value="24/7">
+               
+              </div>
+              <div class="col-md-6">
+              <label class="form-label">Account Manager</label>
+                 <select name="account_manager" class="form-control js-example-basic-singlee" style="width: 100% !important">
+                     <option>--Select--</option>
+                     <option value="Available">Available</option>
+                     <option value="Not Available">Not Available</option>
+                     
+                </select>
+                @error('account_manager')
+                <span class="invalid-feedback d-block" role="alert"><strong>{{ $message }}</strong></span>
+                @enderror
+              </div>
+            </div> 
+
+            <div class="row gy-3 mt-2">  
+              <div class="col-md-6">
+                <label class="form-label">Split Sheet</label>
+                <select name="split_sheet" class="form-control js-example-basic-singlee" style="width: 100% !important">
+                     <option>--Select--</option>
+                     <option value="Yes">Yes</option>
+                     <option value="No">No</option>
+                     
+                </select>
+                 @error('split_sheet')
+                <span class="invalid-feedback d-block" role="alert"><strong>{{ $message }}</strong></span>
+                @enderror
+              </div>
+              <div class="col-md-6">
+              <label class="form-label">Synced lyrics in stores</label>
+                 <select name="synced_lyrics" class="form-control js-example-basic-singlee" style="width: 100% !important">
+                     <option>--Select--</option>
+                     <option value="Allowed">Allowed</option>
+                     <option value="Not Allowed">Not Allowed</option>
+                     
+                </select>
+                @error('synced_lyrics')
+                <span class="invalid-feedback d-block" role="alert"><strong>{{ $message }}</strong></span>
+                @enderror
+              </div>
+            </div>
+
+
+            <div class="row gy-3 mt-2">  
+              <div class="col-md-6">
+                <label class="form-label">Custom Release Date</label>
+                <select name="custom_release_date" class="form-control js-example-basic-singlee" style="width: 100% !important">
+                     <option>--Select--</option>
+                     <option value="Yes">Yes</option>
+                     <option value="No">No</option>
+                     
+                </select>
+                 @error('custom_release_date')
+                <span class="invalid-feedback d-block" role="alert"><strong>{{ $message }}</strong></span>
+                @enderror
+              </div>
+              <div class="col-md-6">
+              <label class="form-label">Custom Release Label</label>
+                 <select name="custom_release_label" class="form-control js-example-basic-singlee" style="width: 100% !important">
+                     <option>--Select--</option>
+                     <option value="Yes">Yes</option>
+                     <option value="No">No</option>
+                     
+                </select>
+                @error('custom_release_label')
+                <span class="invalid-feedback d-block" role="alert"><strong>{{ $message }}</strong></span>
+                @enderror
+              </div>
+            </div>
+
+            <div class="row gy-3 mt-2">  
+              <div class="col-md-6">
+                <label class="form-label">Upload Releases</label>
+                <select name="uploads" class="form-control js-example-basic-singlee" style="width: 100% !important">
+                     <option>--Select--</option>
+                     <option value="Single">Single</option>
+                     <option value="Unlimited">Unlimited</option>
+                     
+                </select>
+                 @error('uploads')
+                <span class="invalid-feedback d-block" role="alert"><strong>{{ $message }}</strong></span>
+                @enderror
+              </div>
+              <div class="col-md-6">
+              <label class="form-label">Renewal</label>
+                 <select name="renewal" class="form-control js-example-basic-singlee" style="width: 100% !important">
+                     <option>--Select--</option>
+                     <option value="Yes">Yes</option>
+                     <option value="No">No</option>
+                     
+                </select>
+                @error('renewal')
+                <span class="invalid-feedback d-block" role="alert"><strong>{{ $message }}</strong></span>
+                @enderror
+              </div>
+            </div>
+
+
+            <div class="row gy-3 mt-2">  
+              <div class="col-md-6">
+                <label class="form-label">TakeDowns/Reuploads</label>
+                <select name="takedown_reupload" class="form-control js-example-basic-singlee" style="width: 100% !important">
+                     <option>--Select--</option>
+                     <option value="Free">Free</option>
+                     <option value="Not Free">Not Free</option>
+                     
+                </select>
+                 @error('takedown_reupload')
+                <span class="invalid-feedback d-block" role="alert"><strong>{{ $message }}</strong></span>
+                @enderror
+              </div>
+              <div class="col-md-6">
+              <label class="form-label">Analytics</label>
+                 <select name="analytics" class="form-control js-example-basic-singlee" style="width: 100% !important">
+                     <option>--Select--</option>
+                     <option value="Weekly">Weekly</option>
+                     <option value="Monthly">Monthly</option>
+                     
+                </select>
+                @error('analytics')
+                <span class="invalid-feedback d-block" role="alert"><strong>{{ $message }}</strong></span>
+                @enderror
+              </div>
+            </div>
+
+            <div class="row gy-3 mt-2">  
+              <div class="col-md-6">
+                <label class="form-label">Royalty Payout</label>
+                 <input  type="number" name="royalty_payout" class="form-control">
+                 @error('royalty_payout')
+                <span class="invalid-feedback d-block" role="alert"><strong>{{ $message }}</strong></span>
+                @enderror
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Synced Licensing</label>
+                <select name="synced_licensing" class="form-control js-example-basic-singlee" style="width: 100% !important">
+                     <option>--Select--</option>
+                     <option value="Yes">Yes</option>
+                     <option value="No">No</option>
+                     
+                </select>
+                 @error('synced_licensing')
+                <span class="invalid-feedback d-block" role="alert"><strong>{{ $message }}</strong></span>
+                @enderror
+              </div>
+              
+            </div>
+
+             <div class="row gy-3 mt-2">  
+              <div class="col-md-6">
+                <label class="form-label">ISRC/UPC/EAN Ownership</label>
+                 <select name="ownership_isrc" class="form-control js-example-basic-singlee" style="width: 100% !important">
+                     <option>--Select--</option>
+                     <option value="Yes">Yes</option>
+                     <option value="No">No</option>
+                     
+                </select>
+                 @error('ownership_isrc')
+                <span class="invalid-feedback d-block" role="alert"><strong>{{ $message }}</strong></span>
+                @enderror
+              </div>
+              <div class="col-md-6">
+              <label class="form-label">Distribution</label>
+                 <select name="distribution[]" multiple="multiple" class="form-control js-example-basic-singlee" style="width: 100% !important">
+                     <option>--Select--</option>
+                     <option value="Spotify">Spotify</option>
+                     <option value="Apple Music">Apple Music</option>
+                     <option value="BoomPlay">BoomPlay</option>
+                     <option value="Audiomack">Audiomack</option>
+                     <option value="Tiktok">Tiktok</option>
+                     <option value="Youtube Music">Youtube Music</option>
+                     
+                </select>
+                @error('distribution')
+                <span class="invalid-feedback d-block" role="alert"><strong>{{ $message }}</strong></span>
+                @enderror
+              </div>
+            </div>
+
+
             
             <div class="row gy-3 mt-2">  
               <div class="col-md-6">

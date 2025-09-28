@@ -7,7 +7,7 @@
         <td>{{$value->remarks ?? ''}}</td>
         <td>&#8358;{{$value->amount ?? ''}}</td>
         <td>
-            {{$value->subscription_name ?? 'Not Available'}}
+            {{$value->subscription->subscription_name ?? 'Not Available'}}
         </td>
             <td>{{$value->reference ?? 'Not Available'}}</td>
         <td class="text-center"> 

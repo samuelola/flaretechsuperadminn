@@ -49,6 +49,8 @@ class SubscriptionController extends Controller
         $data['is_cancellation_enable'] = $request->is_cancellation_enable;
         $data['is_one_time_subscription'] = $request->is_one_time_subscription;
         $data['is_this_free_subscription'] = $request->is_this_free_subscription;
+        $data['support'] = $request->support;
+        $data['distribution'] = json_encode($request->distribution);
         $subService = (new SubscriptionService())->storeSub($data);
         return redirect()->back()->with('success','Subscription created Successfully');
     }
@@ -72,8 +74,10 @@ class SubscriptionController extends Controller
         $number_of_trackproduct = DB::table('number_of_track')->get();
         $currency = DB::table('currency')->get();
         $subscription_duration = DB::table('subscription_duration')->get();
+        $subscription_plann = DB::table('subscription_plan')->get();
         $subscription_limit = DB::table('subscription_limit')->get();
         return view('dashboard.pages.edit_subscription_form',compact(
+            'subscription_plann',
             'editsubscription',
             'num',
             'number_of_trackproduct',
@@ -97,7 +101,7 @@ class SubscriptionController extends Controller
                     'is_this_free_subscription' => $request->is_this_free_subscription,
                     'subscription_name'=>$request->subscription_name,
                     'artist_no'=>$request->artist_no,
-                    'stock_keeping_unit'=>$request->stock_keeping_unit,
+                    // 'stock_keeping_unit'=>$request->stock_keeping_unit,
                     'no_of_tracks'=>$request->no_of_tracks,
                     'no_of_products'=>$request->no_of_products,
                     'max_no_of_tracks_per_products'=>$request->max_no_of_tracks_per_products,
@@ -110,6 +114,20 @@ class SubscriptionController extends Controller
                     'include_tax' => $request->include_tax,
                     'subscription_duration' => $request->subscription_duration,
                     'subscription_limit_per_year' => $request->subscription_limit_per_year,
+                    'account_manager' => $request->account_manager,
+                    'split_sheet'  => $request->split_sheet,
+                    'synced_lyrics'  => $request->synced_lyrics,
+                    'custom_release_date' => $request->custom_release_date,
+                    'takedown_reupload' => $request->takedown_reupload,
+                    'analytics' => $request->analytics,
+                    'royalty_payout' => $request->royalty_payout,
+                    'ownership_isrc' => $request->ownership_isrc,
+                    'distribution'   => $request->distribution,
+                    'custom_release_label' => $request->custom_release_label,
+                    'support' => $request->support,
+                    'synced_licensing' => $request->synced_licensing,
+                    'uploads' => $request->uploads,
+                    'renewal' => $request->renewal,
                 ]); 
 
         return redirect()->route('allsubscription')->with('success','Sucription updated Successfully');        
