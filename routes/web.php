@@ -14,6 +14,8 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UploadController;
+use App\Http\Controllers\MusicFormController;
+use App\Http\Controllers\ReleaseController;
 
 
 
@@ -138,6 +140,49 @@ Route::middleware('superadmincheck')->group(function () {
 
     Route::controller(UploadController::class)->group(function () {
         Route::post('/upload/image','upload')->name('upload.image');
+    });
+
+     Route::controller(MusicFormController::class)->group(function () {
+            
+        Route::get('/releases/create','showStep')->name('releases.create');
+        // Ajax endpoints
+        Route::post('/releases/ajax-save-step','ajaxSaveStep')->name('releases.ajax.save');
+        Route::post('/releases/upload-audio','uploadAudio')->name('releases.upload.audio');
+        Route::post('/releases/upload-artwork','uploadArtwork')->name('releases.upload.artwork');
+        Route::post('/releases/generate-isrc','generateIsrc')->name('releases.generate.isrc');
+        Route::post('/releases/save-tracks','saveTrackDetails')->name('releases.save.tracks');
+        Route::post('/releases/save-outlets','saveOutlets')->name('releases.save.outlets');
+        Route::post('/releases/submit-final', 'submitFinal')->name('releases.submit.final');
+        Route::get('/releases/load-draft', 'loadDraft')->name('releases.load.draft');
+        Route::get('/edit_music/{id}','editMusicProductForm')->name('edit_music_form');
+        Route::get('/releases/load-edit/{id}','loadEditRelease')->name('releases.load.edit');
+
+        Route::put('/update_basic/{id}', 'updateBasic')->name('release.update.basic');
+        Route::post('/update_artwork/{id}', 'updateArtwork')->name('release.update.artwork');
+        Route::post('/update_audios/{id}', 'updateAudio')->name('release.update.audio');
+        Route::put('/update_tracks/{id}', 'updateTracks')->name('release.update.tracks');
+        Route::put('/update_outlets/{id}', 'updateOutlets')->name('release.update.outlets');
+        Route::post('update_final/{id}', 'submitFinalUpdate')->name('release.update.final');
+        Route::delete('/delete_audio/{track}','deleteAudio')->name('release.delete.audio');
+        Route::get('/get_tracks/{id}', 'getTracks');
+        Route::post('/clear_audios','clearAllAudios')->name('music.clearAudios');
+        Route::post('/delete_audio_track','deleteAudioTrack');
+        Route::post('/release_approval','releaseApproval');
+        
+    });
+
+
+    Route::controller(ReleaseController::class)->group(function () {
+        Route::get('/music_product','musicProduct')->name('music_product');
+        Route::get('/labels','musicLabels')->name('music_labels');
+        Route::get('/artists','musicArtist')->name('music_artist');
+        Route::get('/music_release','musicRelease')->name('music_release');
+        Route::post('/store_music_release','storeMusicRelease')->name('store_music_release');
+        Route::get('/fetch_music/{id}', 'fetchMusic')->name('fetchMusic');
+        Route::post('/start_music', 'startMusicRelease')->name('start_music_release');
+        Route::get('/last_release','getLastRelease')->name('last_release');
+        Route::get('/edit_music_product/{id}','editMusicProduct')->name('edit_music_product');
+        Route::post('/update_music','updateMusicRelease')->name('update_music_release');
     });
 
     

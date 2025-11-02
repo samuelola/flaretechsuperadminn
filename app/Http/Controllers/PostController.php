@@ -12,8 +12,9 @@ class PostController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
-        return view('dashboard.pages.posts.index');
+    {   
+        $posts = Post::all();
+        return view('dashboard.pages.posts.index',compact('posts'));
     }
 
     /**
@@ -21,7 +22,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        return view('dashboard.pages.posts.create');
     }
 
     /**
@@ -48,7 +49,7 @@ class PostController extends Controller
         
 
         session()->flash('success', "Post created is successful");
-        return redirect()->back();
+        return redirect()->route('posts.index');
 
     }
 
@@ -65,7 +66,8 @@ class PostController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $post = Post::find($id);
+        return view('dashboard.pages.posts.edit',compact('post'));
     }
 
     /**
@@ -73,7 +75,54 @@ class PostController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+                // Find the post
+            $post = Post::findOrFail($id);
+
+            // Validate input
+            $validated = $request->validate([
+                'title' => 'required|string|max:255',
+                'content' => 'required|string',
+                'thumbnail' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
+            ]);
+
+            // Handle thumbnail upload
+            if ($request->hasFile('thumbnail')) {
+                $file = $request->file('thumbnail');
+                $newFileName = time() . '.' . $file->getClientOriginalExtension();
+
+                // Define upload path
+                $uploadPath = public_path('uploads');
+
+                // Create folder if missing
+                if (!file_exists($uploadPath)) {
+                    mkdir($uploadPath, 0777, true);
+                }
+
+                // Delete old image if exists
+                if ($post->thumbnail && file_exists(public_path('uploads/' . $post->thumbnail))) {
+                    unlink(public_path('uploads/' . $post->thumbnail));
+                }
+
+                // Move new file
+                $file->move($uploadPath, $newFileName);
+
+                // Save new filename
+                $validated['thumbnail'] = $newFileName;
+            } else {
+                // Keep the old image if no new one is uploaded
+                $validated['thumbnail'] = $post->thumbnail;
+            }
+
+            $post->update([
+                'title' => $validated['title'],
+                'content' => $validated['content'],
+                'thumbnail' => $validated['thumbnail'],
+            ]);
+
+            // Redirect with success
+            return redirect()
+                ->route('posts.index')
+                ->with('success', 'Post updated successfully!');
     }
 
     /**
@@ -81,6 +130,20 @@ class PostController extends Controller
      */
     public function destroy(string $id)
     {
-        //
-    }
+        // Find the post
+        $post = Post::findOrFail($id);
+
+        // Delete the thumbnail file if it exists
+        if ($post->thumbnail && file_exists(public_path('uploads/' . $post->thumbnail))) {
+            unlink(public_path('uploads/' . $post->thumbnail));
+        }
+
+        // Delete the post record
+        $post->delete();
+
+        // Redirect with success message
+        return redirect()
+            ->route('posts.index')
+            ->with('success', 'Post deleted successfully!');
+        }
 }

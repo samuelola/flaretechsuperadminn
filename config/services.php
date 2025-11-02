@@ -35,4 +35,10 @@ return [
         ],
     ],
 
+    'external_url' => [
+    'website' => env('WEBSITE_URL'),
+    'website2' => env('WEBSITE_URL2'),
+    
+   ],
+
 ];

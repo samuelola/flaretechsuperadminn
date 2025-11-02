@@ -6,7 +6,15 @@
 
 @include('sweetalert::alert')
 
- 
+ @php 
+    function shortenBlogContent($content, $limit = 50) {
+        $words = explode(" ", strip_tags($content)); // remove HTML first
+        if (count($words) <= $limit) {
+            return $content;
+        }
+        return implode(" ", array_slice($words, 0, $limit)) . '...';
+    }
+ @endphp
 
 <main class="dashboard-main">
   <div class="navbar-header">
@@ -32,7 +40,7 @@
   
   <div class="dashboard-main-body">
     <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-24">
-  <h6 class="fw-semibold mb-0">Create Post</h6>
+  <h6 class="fw-semibold mb-0">All Posts</h6>
 
 </div>
 
@@ -65,41 +73,66 @@
                 <div class="card h-100">
                     <div class="card-body p-24">
                           <div class=" align-items-center">
-                                      <div class="row">
+                                <div class="row">
+                                      <div class="table-responsive">
+                                    <table class="table colored-row-table mb-0">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col" class="bg-base">Sn</th>
+                                            <th scope="col" class="bg-base">Thumbnail</th>    
+                                            <th scope="col" class="bg-base">Title</th>    
+                                            <th scope="col" class="bg-base">Content</th>
+                                            <th scope="col" class="bg-base">Date</th>
+                                            <th scope="col" class="bg-base">Action</th>    
+                                        </tr>
+                                        </thead>
+                                        <tbody>
 
-                                          <div class="col-md-3"></div>
-                                          <div class="col-md-6">
-                                                <form action="{{ route('posts.store') }}" method="POST" enctype="multipart/form-data">
-                                                    @csrf
-                                                    <div class="mb-3">
-                                                        <label for="title">Title:</label>
-                                                        <input type="text" name="title" class="form-control">
-                                                        @error('title')
-                                                        <p class="text-red-500 text-sm" style="color:#d22f2f">{{ $message }}</p>
-                                                        @enderror
-                                                    </div>
+                                        @php
+                                            // Define an array of background color classes
+                                            $rowColors = ['bg-primary-light', 'bg-success-focus', 'bg-info-focus', 'bg-warning-focus', 'bg-danger-focus'];
+                                        @endphp
 
-                                                    <div class="mb-3">
-                                                        <label for="title">Thumbnail:</label>
-                                                        <input type="file" name="thumbnail" class="form-control">
-                                                        @error('thumbnail')
-                                                        <p class="text-red-500 text-sm" style="color:#d22f2f">{{ $message }}</p>
-                                                        @enderror
+                                        @foreach($posts as $key=>$post)
+                                             @php
+                                                // Pick a color based on row index, loop back using modulo
+                                                $colorClass = $rowColors[$key % count($rowColors)];
+                                             @endphp
+                                             <tr>
+                                                    <td class="{{ $colorClass }}">{{$key+1}}</td>
+                                                    <td class="{{ $colorClass }}">
+                                                    <div class="d-flex align-items-center">
+                                                        <img src="uploads/{{$post->thumbnail}}" alt="" class="w-40-px h-40-px rounded-circle flex-shrink-0 me-12 overflow-hidden">
+                                                        
                                                     </div>
+                                                    </td>    
+                                                    <td class="{{ $colorClass }}">{{$post->title}}</td>
                                                     
-                                                    <div class="mb-3">
-                                                        <label for="content">Content:</label>
-                                                        <!-- <textarea name="content" id="editor" class="form-control"></textarea> -->
-                                                        <textarea name="content" id="editor1" class="form-control"></textarea>
-                                                    </div>
-
-                                                    <button type="submit" class="btn btn-primary-600">Publish</button>
-                                                </form>
-                                          </div>
-                                          <div class="col-md-3"></div>
-                                      
-                                  </div>
-                              </div>
+                                                    <td class="{{ $colorClass }}">{{ shortenBlogContent($post->content, 3) }}</td>
+                                                    <td class="{{ $colorClass }}"> {{date("M d, Y", strtotime($post->created_at))}}</td>
+                                                    <td class="{{ $colorClass }}">
+                                                        <div class="d-flex align-items-center gap-1">
+                                                            <a class="btn btn-info" href="{{route('posts.edit',$post->id)}}"><iconify-icon icon="tabler:edit" width="16" height="16"></iconify-icon></a>
+                                                            
+                                                            <form action="{{ route('posts.destroy', $post->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this post?');">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="submit" class="btn btn-sm btn-danger">
+                                                                    <iconify-icon icon="ant-design:delete-outlined" width="16" height="16"></iconify-icon>
+                                                                </button>
+                                                            </form>
+                                                        </div>
+                                                    </td>    
+                                                    
+                                              </tr>
+                                        @endforeach
+                                        
+                                        
+                                        </tbody>
+                                    </table>
+                                    </div>   
+                                </div>
+                          </div>
                     </div>
                 </div>
             </div>
@@ -114,22 +147,18 @@
 @endsection
 
 @section('script')
-<script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
-
 <script>
-   CKEDITOR.replace('editor1', {
-        filebrowserUploadUrl: "{{ route('upload.image') }}?_token={{ csrf_token() }}",
-        filebrowserImageUploadUrl: "{{ route('upload.image') }}?_token={{ csrf_token() }}",
-    });
-
-    CKEDITOR.on('instanceReady', function(evt) {
-  // Override notification system to disable warnings
-        evt.editor.showNotification = function() {
-          return { update: function(){}, hide: function(){} };
-        };
-      });
+    function confirmDelete(event) {
+        const confirmed = confirm('Are you sure you want to delete this post?');
+        if (!confirmed) {
+            event.preventDefault(); // Stop form submission
+            return false;
+        }
+        return true; // Allow form to submit
+    }
 </script>
 @endsection
+
 
 
 
