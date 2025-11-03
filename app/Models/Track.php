@@ -14,7 +14,7 @@ class Track extends Model
     ];
 
     public function release() {
-         return $this->belongsTo(MusicRelease::class);
+         return $this->belongsTo(MusicRelease::class,'music_release_id');
     }
     public function audioFile() { 
         return $this->belongsTo(AudioFile::class,'audio_file_id'); 

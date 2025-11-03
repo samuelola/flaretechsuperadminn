@@ -32,6 +32,12 @@ Route::middleware('check.user')->group(function () {
     Route::get('/dashboardd', [DashboardController::class,'showDashboardd'])->name('dashboardd');
 });
 
+
+
+
+Route::get('/share/{id}', [DashboardController::class, 'share'])->name('share_track');
+
+
 Route::middleware('superadmincheck')->group(function () {
 
     Route::controller(DashboardController::class)->group(function () {
@@ -43,6 +49,9 @@ Route::middleware('superadmincheck')->group(function () {
         Route::get('/view_user/{id}','viewDashboard')->name('viewdashboardusers');
         Route::get('/alltracks','allTracks')->name('allTracks');
         Route::get('/view_tracks/{id}','viewTracks')->name('view_tracks');
+        Route::get('/download/{id}', 'download')->name('download_track');
+       
+
     });
 
     Route::controller(UserController::class)->group(function () {

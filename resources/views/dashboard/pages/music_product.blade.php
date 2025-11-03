@@ -65,11 +65,11 @@
                                     <h5 class="card-title text-lg text-primary-light
                                     mb-6">{{$item->title}}</h5>
                                     <div class="d-flex justify-content-between ">
-                                       <p class="card-text text-neutral-600">Artist: {{$item->user->first_name}} {{$item->user->last_name}}</p>
-                                       <p class="card-text text-neutral-600">Tracks : ({{$item->tracks_count}})</p>
+                                       <p class="card-text text-neutral-600">Artist: {{$item->user->first_name ?? ''}} {{$item->user->last_name ?? ''}}</p>
+                                       <p class="card-text text-neutral-600">Tracks : ({{$item->tracks_count ?? '0'}})</p>
                                     </div>
-                                    <p class="card-text text-neutral-600">Format: {{$item->release_type}}</p> 
-                                    <p class="card-text text-neutral-600">Label Name: {{$item->label_name}}</p>    
+                                    <p class="card-text text-neutral-600">Format: {{$item->release_type ?? ''}}</p> 
+                                    <p class="card-text text-neutral-600">Label Name: {{$item->label_name ?? ''}}</p>    
                                     <p class="card-text text-neutral-600">Status:
                                        @if($item->distributed == 'yes')
                                          Released

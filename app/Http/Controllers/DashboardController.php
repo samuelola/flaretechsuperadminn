@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Facades\Cache;
+use App\Models\Track;
 
 use App\Mail\TestMail;
 use Illuminate\Support\Facades\Mail;
@@ -285,7 +286,11 @@ class DashboardController extends Controller
     }
 
     public function allTracks(Request $request){
-         $all_th_tracks = DB::table('trackdetails')->orderBy('id','desc')->paginate(10);
+         
+         $all_th_tracks = Track::with(['audioFile','participants','release'])
+                          ->withCount('audioFile')
+                          ->orderBy('id','desc')->paginate(10);
+         
          if ($request->ajax()) {
             $viewttracks = view('dashboard.pages.trackspage', compact('all_th_tracks'))->render();
             return response()->json(['htmltracks' => $viewttracks]);
@@ -294,8 +299,35 @@ class DashboardController extends Controller
     }
 
     public function viewTracks(Request $request,$id){
-         $track_user_detail = DB::table('trackdetails')->where('id',$id)->first();
+         //$track_user_detail = DB::table('tracks')->where('id',$id)->first();
+         $track_user_detail = Track::with(['audioFile','participants','release'])->where('id',$id)->first();
          return view('dashboard.pages.track_details',compact('track_user_detail'));
     }
+
+    public function download($id){
+
+    $track = Track::with('audioFile')->findOrFail($id);
+    // Example if your audio path is stored in the database
+    $filePath = $track->audioFile->path ?? null;
+
+    if (!$filePath) {
+        return abort(404, 'File not found');
+    }
+
+    // External base URL
+    
+    $origPath = config('services.external_url.website2');
+    $remoteUrl = $origPath.'/storage/'.$filePath;
+    
+    return redirect()->away($remoteUrl);
+
+   
+   }
+
+   public function share($id){
+    $track = Track::findOrFail($id);
+    return view('dashboard.pages.track_share', compact('track'));
+   }
+
     
 }
